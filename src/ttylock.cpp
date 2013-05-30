@@ -31,6 +31,7 @@
 #include <signal.h>
 #include <errno.h>
 #include <stdio.h>
+#include <unistd.h>
 
 ttylock::ttylock(QString t)
 {
