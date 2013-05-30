@@ -1,0 +1,3 @@
+/home/paul/playa/ccload/build/src/CMakeFiles/ccload.dir
+/home/paul/playa/ccload/build/src/CMakeFiles/ccload_automoc.dir
+/home/paul/playa/ccload/build/CMakeFiles/uninstall.dir
