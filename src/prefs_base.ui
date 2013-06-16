@@ -21,7 +21,7 @@
     </widget>
    </item>
    <item row="0" column="1" >
-    <widget class="KColorButton" name="kcfg_col_background" >
+    <widget class="QPushButton" name="kcfg_col_background" >
      <property name="toolTip" >
       <string>Choose a new background color</string>
      </property>
@@ -57,7 +57,7 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item row="1" column="1" >
-    <widget class="KColorButton" name="kcfg_col_foreground" >
+    <widget class="QPushButton" name="kcfg_col_foreground" >
      <property name="toolTip" >
       <string>Choose a new foreground color</string>
      </property>
@@ -138,16 +138,6 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
-  <customwidgets>
-  <customwidget>
-   <class>KColorButton</class>
-   <extends>QPushButton</extends>
-   <header>kcolorbutton.h</header>
-  </customwidget>
- </customwidgets>
- <includes>
-  <include location="local" >kcolorbutton.h</include>
- </includes>
  <resources/>
  <connections/>
 </ui>
