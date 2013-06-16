@@ -21,10 +21,13 @@ nodist_ccload_SOURCES = \
 	ui_prefs_base.h \
 	ui_ccloadview_base.h
 
+ccloadview.o:	ui_prefs_base.h ui_ccloadview_base.h
+ccload.o:	ui_prefs_base.h ui_ccloadview_base.h
+
 # This is to ensure the myapp.h file is distributed in your myapp-0.1.tar.gz
 # I also have a resources.qrc I need to include. The png is used in myapp.
 EXTRA_DIST = \
-	$(nodist_ccload_SOURCES:moc_%.cpp=%.h) 
+	$(nodist_ccload_SOURCES:moc_%.cpp=%.h) \
 	ccloadview_base.ui \
 	prefs_base.ui
 

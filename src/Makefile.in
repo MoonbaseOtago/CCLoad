@@ -179,7 +179,9 @@ nodist_ccload_SOURCES = \
 # This is to ensure the myapp.h file is distributed in your myapp-0.1.tar.gz
 # I also have a resources.qrc I need to include. The png is used in myapp.
 EXTRA_DIST = \
-	$(nodist_ccload_SOURCES:moc_%.cpp=%.h) 
+	$(nodist_ccload_SOURCES:moc_%.cpp=%.h) \
+	ccloadview_base.ui \
+	prefs_base.ui
 
 
 # This line ensures that generated moc_*.cpp and resources.cpp files are
@@ -441,8 +443,9 @@ uninstall-am: uninstall-binPROGRAMS uninstall-info-am
 	mostlyclean-generic pdf pdf-am ps ps-am tags uninstall \
 	uninstall-am uninstall-binPROGRAMS uninstall-info-am
 
-	ccloadview_base.ui \
-	prefs_base.ui
+
+ccloadview.o:	ui_prefs_base.h ui_ccloadview_base.h
+ccload.o:	ui_prefs_base.h ui_ccloadview_base.h
 
 # This rule lets GNU make create any moc_*.cpp from the equivalent *.h
 moc_%.cpp: %.h
