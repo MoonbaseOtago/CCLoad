@@ -42,7 +42,11 @@ ccload::ccload()
 {
     // accept dnd
     //setAcceptDrops(true);
-
+     {
+     QSettings settings("MoonBase", "ccload");
+     restoreGeometry(settings.value("main-geometry").toByteArray());
+     restoreState(settings.value("main-windowState").toByteArray());
+    }
     // tell the KXmlGuiWindow that this is indeed the main widget
     setCentralWidget(m_view);
 
@@ -58,6 +62,14 @@ ccload::ccload()
     // mainwindow to automatically save settings if changed: window size,
     // toolbar position, icon size, etc.
     //setupGUI();
+}
+
+void ccload::closeEvent(QCloseEvent *event)
+{
+     QSettings settings("MoonBase", "ccload");
+     settings.setValue("main-geometry", saveGeometry());
+     settings.setValue("main-windowState", saveState());
+     QMainWindow::closeEvent(event);
 }
 
 ccload::~ccload()

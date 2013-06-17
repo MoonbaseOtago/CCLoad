@@ -6,576 +6,505 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>877</width>
-    <height>917</height>
+    <width>808</width>
+    <height>938</height>
    </rect>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>800</width>
+    <height>900</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5">
+  <layout class="QVBoxLayout" name="verticalLayout_7">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_10">
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>794</width>
+        <height>924</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
          <item>
-          <widget class="QGroupBox" name="groupBox_3">
-           <property name="title">
-            <string>Check CC Led</string>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_8">
-            <item row="0" column="0">
-             <widget class="QPushButton" name="flashCC">
-              <property name="text">
-               <string>Flash CC</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>128</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="1" column="0" colspan="2">
-             <layout class="QGridLayout" name="gridLayout_3">
-              <item row="0" column="1">
-               <widget class="QLineEdit" name="pxSelBits">
-                <property name="text">
-                 <string>0x06</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="pxSellabel">
-                <property name="text">
-                 <string>PxSEL</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0">
-               <widget class="QLabel" name="fileName_8">
-                <property name="text">
-                 <string>Px</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QLineEdit" name="pxSel">
-                <property name="text">
-                 <string>0xf5</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="xxx">
-                <property name="text">
-                 <string>PxBits</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="1">
-               <widget class="QLineEdit" name="pxDir">
-                <property name="text">
-                 <string>0xff</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QLineEdit" name="pxBits">
-                <property name="text">
-                 <string>0x18</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
-               <widget class="QLineEdit" name="px">
-                <property name="text">
-                 <string>0xa0</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0">
-               <widget class="QLabel" name="fileName_7">
-                <property name="text">
-                 <string>PxDir</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <widget class="QLabel" name="fileName_4">
-                <property name="text">
-                 <string>PxSELBits</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QGroupBox" name="groupBox_3">
+               <property name="title">
+                <string>Check CC Led</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_8">
+                <item row="0" column="0">
+                 <widget class="QPushButton" name="flashCC">
+                  <property name="text">
+                   <string>Flash CC</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <spacer name="horizontalSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>128</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item row="1" column="0" colspan="2">
+                 <layout class="QGridLayout" name="gridLayout_3">
+                  <item row="0" column="1">
+                   <widget class="QLineEdit" name="pxSelBits">
+                    <property name="text">
+                     <string>0x06</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="pxSellabel">
+                    <property name="text">
+                     <string>PxSEL</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="0">
+                   <widget class="QLabel" name="fileName_8">
+                    <property name="text">
+                     <string>Px</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QLineEdit" name="pxSel">
+                    <property name="text">
+                     <string>0xf5</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QLabel" name="xxx">
+                    <property name="text">
+                     <string>PxBits</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="4" column="1">
+                   <widget class="QLineEdit" name="pxDir">
+                    <property name="text">
+                     <string>0xff</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="1">
+                   <widget class="QLineEdit" name="pxBits">
+                    <property name="text">
+                     <string>0x18</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="1">
+                   <widget class="QLineEdit" name="px">
+                    <property name="text">
+                     <string>0xa0</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="4" column="0">
+                   <widget class="QLabel" name="fileName_7">
+                    <property name="text">
+                     <string>PxDir</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="fileName_4">
+                    <property name="text">
+                     <string>PxSELBits</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_7">
+               <property name="title">
+                <string>Raw Pins</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_13">
+                <item row="0" column="0">
+                 <widget class="QPushButton" name="DD">
+                  <property name="text">
+                   <string>DD</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QPushButton" name="DC">
+                  <property name="text">
+                   <string>DC</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QPushButton" name="RST">
+                  <property name="text">
+                   <string>RST</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QTextBrowser" name="console"/>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QGroupBox" name="groupBox_6">
+               <property name="title">
+                <string>Serial</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_12">
+                <item row="0" column="0">
+                 <widget class="QPushButton" name="Connect">
+                  <property name="text">
+                   <string>Connect</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLineEdit" name="port">
+                  <property name="text">
+                   <string>/dev/ttyACM0</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0" colspan="2">
+                 <widget class="QCheckBox" name="autoConnect">
+                  <property name="text">
+                   <string>Auto Connect</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="Interface">
+               <property name="title">
+                <string>Interface</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_2">
+                <item>
+                 <widget class="QRadioButton" name="Production">
+                  <property name="text">
+                   <string>Production</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="Debug">
+                  <property name="text">
+                   <string>Debug</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QGroupBox" name="groupBox_9">
+               <property name="title">
+                <string>Debug</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_3">
+                <item>
+                 <widget class="QPushButton" name="step">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Step</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="run">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Run</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="halt">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Halt</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_18">
+                  <property name="text">
+                   <string>PC:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="setPC">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>0x0000</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_19">
+                  <property name="text">
+                   <string>Read Mem:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="readLocation">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>0x0000</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_6"/>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_4">
+               <property name="title">
+                <string>Read/Write</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_10">
+                <item row="0" column="0" colspan="2">
+                 <widget class="QPushButton" name="selectFile">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Select File</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="2">
+                 <widget class="QLabel" name="fileName">
+                  <property name="text">
+                   <string>unknown</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QPushButton" name="readFile">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Read</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1" colspan="2">
+                 <widget class="QCheckBox" name="verifyAfterWrite">
+                  <property name="text">
+                   <string>Verify After Write</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="3">
+                 <widget class="QCheckBox" name="erasePage">
+                  <property name="text">
+                   <string>Erase Page</string>
+                  </property>
+                  <property name="checked">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QPushButton" name="writeFile">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Write</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="2" rowspan="2" colspan="2">
+                 <layout class="QGridLayout" name="gridLayout_9">
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="fileName_2">
+                    <property name="text">
+                     <string>Start:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QLineEdit" name="startAddress"/>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="fileName_3">
+                    <property name="text">
+                     <string>End:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QLineEdit" name="endAddress"/>
+                  </item>
+                 </layout>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QPushButton" name="verifyFile">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Verify</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="2" colspan="2">
+                 <widget class="QProgressBar" name="progress">
+                  <property name="value">
+                   <number>0</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0" colspan="2">
+                 <widget class="QPushButton" name="loadFile">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Load File</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QPushButton" name="eraseChip">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Erase Chip</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_11">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QGroupBox" name="groupBox_7">
-           <property name="title">
-            <string>Raw Pins</string>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_13">
-            <item row="0" column="0">
-             <widget class="QPushButton" name="DD">
-              <property name="text">
-               <string>DD</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="DC">
-              <property name="text">
-               <string>DC</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QPushButton" name="RST">
-              <property name="text">
-               <string>RST</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QTextBrowser" name="console"/>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QGroupBox" name="groupBox_6">
-           <property name="title">
-            <string>Serial</string>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_12">
-            <item row="0" column="0">
-             <widget class="QPushButton" name="Connect">
-              <property name="text">
-               <string>Connect</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="port">
-              <property name="text">
-               <string>/dev/ttyACM0</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0" colspan="2">
-             <widget class="QCheckBox" name="autoConnect">
-              <property name="text">
-               <string>Auto Connect</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="Interface">
-           <property name="title">
-            <string>Interface</string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <item>
-             <widget class="QRadioButton" name="Production">
-              <property name="text">
-               <string>Production</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="Debug">
-              <property name="text">
-               <string>Debug</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QGroupBox" name="groupBox_9">
-           <property name="title">
-            <string>Debug</string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_3">
-            <item>
-             <widget class="QPushButton" name="step">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Step</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="run">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Run</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="halt">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Halt</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_18">
-              <property name="text">
-               <string>PC:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="setPC">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>0x0000</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_19">
-              <property name="text">
-               <string>Read Mem:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="readLocation">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>0x0000</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_6"/>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupBox_4">
-           <property name="title">
-            <string>Read/Write</string>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_10">
-            <item row="0" column="0" colspan="2">
-             <widget class="QPushButton" name="selectFile">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Select File</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="fileName">
-              <property name="text">
-               <string>unknown</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QPushButton" name="readFile">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Read</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1" colspan="2">
-             <widget class="QCheckBox" name="verifyAfterWrite">
-              <property name="text">
-               <string>Verify After Write</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="3">
-             <widget class="QCheckBox" name="erasePage">
-              <property name="text">
-               <string>Erase Page</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QPushButton" name="writeFile">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Write</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="2" rowspan="2" colspan="2">
-             <layout class="QGridLayout" name="gridLayout_9">
-              <item row="0" column="0">
-               <widget class="QLabel" name="fileName_2">
-                <property name="text">
-                 <string>Start:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLineEdit" name="startAddress"/>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="fileName_3">
-                <property name="text">
-                 <string>End:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QLineEdit" name="endAddress"/>
-              </item>
-             </layout>
-            </item>
-            <item row="4" column="0">
-             <widget class="QPushButton" name="verifyFile">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Verify</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="2" colspan="2">
-             <widget class="QProgressBar" name="progress">
-              <property name="value">
-               <number>0</number>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0" colspan="2">
-             <widget class="QPushButton" name="loadFile">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Load File</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="0">
-             <widget class="QPushButton" name="eraseChip">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Erase Chip</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_11">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_5">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>17</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <item>
-          <widget class="QGroupBox" name="groupBox_5">
-           <property name="title">
-            <string>Chip</string>
-           </property>
-           <layout class="QGridLayout" name="gridLayout">
-            <item row="0" column="0">
-             <widget class="QLabel" name="Message_4">
-              <property name="text">
-               <string>Model</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QComboBox" name="chipModel"/>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="Message_5">
-              <property name="text">
-               <string>Chip:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLabel" name="chipSeries">
-              <property name="text">
-               <string>unknown</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="Message_8">
-              <property name="text">
-               <string>ID:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QLabel" name="chipID">
-              <property name="text">
-               <string>unknown</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="Message_6">
-              <property name="text">
-               <string>Revision:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QLabel" name="revision">
-              <property name="text">
-               <string>unknown</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0">
-             <widget class="QLabel" name="Message_7">
-              <property name="text">
-               <string>Size:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="1">
-             <widget class="QLabel" name="chipSize">
-              <property name="text">
-               <string>unknown</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_7">
+          <spacer name="horizontalSpacer_5">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -587,666 +516,762 @@
            </property>
           </spacer>
          </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QGroupBox" name="groupBox_5">
+               <property name="title">
+                <string>Chip</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="Message_4">
+                  <property name="text">
+                   <string>Model</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QComboBox" name="chipModel"/>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="Message_5">
+                  <property name="text">
+                   <string>Chip:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLabel" name="chipSeries">
+                  <property name="text">
+                   <string>unknown</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="Message_8">
+                  <property name="text">
+                   <string>ID:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLabel" name="chipID">
+                  <property name="text">
+                   <string>unknown</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="Message_6">
+                  <property name="text">
+                   <string>Revision:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QLabel" name="revision">
+                  <property name="text">
+                   <string>unknown</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="Message_7">
+                  <property name="text">
+                   <string>Size:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="QLabel" name="chipSize">
+                  <property name="text">
+                   <string>unknown</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_7">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>17</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QGroupBox" name="groupBox">
+               <property name="title">
+                <string>CC Status Byte</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_6">
+                <item row="0" column="0">
+                 <layout class="QGridLayout" name="gridLayout_4">
+                  <item row="0" column="0">
+                   <widget class="QCheckBox" name="chipEraseDone">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QLabel" name="fileName_5">
+                    <property name="text">
+                     <string>Chip Erase Done (0x80)</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QCheckBox" name="pconIdle">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QLabel" name="fileName_6">
+                    <property name="text">
+                     <string>PCON Idle (0x40)</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QCheckBox" name="cpuHalted">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="1">
+                   <widget class="QLabel" name="fileName_9">
+                    <property name="text">
+                     <string>CPU Halted  (0x20)</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="0">
+                   <widget class="QCheckBox" name="powerMode0">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="1">
+                   <widget class="QLabel" name="fileName_10">
+                    <property name="text">
+                     <string>Power Mode 0 (0x10)</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="4" column="0">
+                   <widget class="QCheckBox" name="haltStatus">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="4" column="1">
+                   <widget class="QLabel" name="fileName_11">
+                    <property name="text">
+                     <string>Halt Status  (0x08)</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="5" column="0">
+                   <widget class="QCheckBox" name="debugLocked">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="5" column="1">
+                   <widget class="QLabel" name="fileName_12">
+                    <property name="text">
+                     <string>Debug Locked  (0x04)</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="6" column="0">
+                   <widget class="QCheckBox" name="oscillatorStable">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="6" column="1">
+                   <widget class="QLabel" name="fileName_13">
+                    <property name="text">
+                     <string>Oscillator Stable (0x02)</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="7" column="0">
+                   <widget class="QCheckBox" name="stackOverflow">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="7" column="1">
+                   <widget class="QLabel" name="fileName_14">
+                    <property name="text">
+                     <string>Stack Overflow  (0x01)</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_8">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>17</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <item>
+              <widget class="QGroupBox" name="groupBox_2">
+               <property name="title">
+                <string>CC Config Byte</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_7">
+                <item row="0" column="0">
+                 <layout class="QGridLayout" name="gridLayout_5">
+                  <item row="2" column="1">
+                   <widget class="QLabel" name="fileName_17">
+                    <property name="text">
+                     <string>Timer Suspend</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QLabel" name="fileName_15">
+                    <property name="text">
+                     <string>Timers Off</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QCheckBox" name="dmaPause">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="1">
+                   <widget class="QLabel" name="fileName_18">
+                    <property name="text">
+                     <string>Sel Flash Info</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QCheckBox" name="timersOff">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QCheckBox" name="timerSuspend">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="0">
+                   <widget class="QCheckBox" name="selFlashInfo">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QLabel" name="fileName_16">
+                    <property name="text">
+                     <string>DMA Pause</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_9">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>17</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_8">
+             <item>
+              <widget class="QGroupBox" name="groupBox_8">
+               <property name="minimumSize">
+                <size>
+                 <width>131</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="title">
+                <string>Registers</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_2">
+                <item row="1" column="2" colspan="3">
+                 <widget class="QLabel" name="REG_A">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="5">
+                 <widget class="QLabel" name="label_15">
+                  <property name="text">
+                   <string>DPL0:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="6">
+                 <widget class="QLabel" name="REG_DPL0">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="0">
+                 <widget class="QLabel" name="label_7">
+                  <property name="text">
+                   <string>R3:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="5">
+                 <widget class="QLabel" name="label_16">
+                  <property name="text">
+                   <string>DPL1:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="6">
+                 <widget class="QLabel" name="REG_DPL1">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_2">
+                  <property name="text">
+                   <string>A:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label">
+                  <property name="text">
+                   <string>PC:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="6">
+                 <widget class="QLabel" name="REG_B">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="5">
+                 <widget class="QLabel" name="label_13">
+                  <property name="text">
+                   <string>SP:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="6">
+                 <widget class="QLabel" name="REG_SP">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_4">
+                  <property name="text">
+                   <string>R0:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="2" colspan="2">
+                 <widget class="QLabel" name="REG_R0">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="5">
+                 <widget class="QLabel" name="label_8">
+                  <property name="text">
+                   <string>R4:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="6">
+                 <widget class="QLabel" name="REG_R4">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QLabel" name="label_5">
+                  <property name="text">
+                   <string>R1:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1" colspan="2">
+                 <widget class="QLabel" name="REG_R1">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="5">
+                 <widget class="QLabel" name="label_9">
+                  <property name="text">
+                   <string>R5:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="6">
+                 <widget class="QLabel" name="REG_R5">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="0">
+                 <widget class="QLabel" name="label_6">
+                  <property name="text">
+                   <string>R2:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="1" colspan="2">
+                 <widget class="QLabel" name="REG_R2">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="6">
+                 <widget class="QLabel" name="REG_R6">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="1" colspan="2">
+                 <widget class="QLabel" name="REG_R3">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="5">
+                 <widget class="QLabel" name="label_11">
+                  <property name="text">
+                   <string>R7:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="6">
+                 <widget class="QLabel" name="REG_R7">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="2" colspan="2">
+                 <widget class="QLabel" name="REG_DPH1">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="5">
+                 <widget class="QLabel" name="label_10">
+                  <property name="text">
+                   <string>R6:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="5">
+                 <widget class="QLabel" name="label_3">
+                  <property name="text">
+                   <string>B:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_12">
+                  <property name="text">
+                   <string>PSW:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_14">
+                  <property name="text">
+                   <string>DHP0:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_17">
+                  <property name="text">
+                   <string>DPH1:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="2" colspan="3">
+                 <widget class="QLabel" name="REG_PSW">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1" colspan="6">
+                 <widget class="QLabel" name="REG_PC">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="2" colspan="3">
+                 <widget class="QLabel" name="REG_DPH0">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_10">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item>
+              <widget class="QPushButton" name="getStatus">
+               <property name="text">
+                <string>Get Status</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_6">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>17</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
          <item>
-          <widget class="QGroupBox" name="groupBox">
-           <property name="title">
-            <string>CC Status Byte</string>
+          <widget class="QLabel" name="Message_2">
+           <property name="text">
+            <string>Status:</string>
            </property>
-           <layout class="QGridLayout" name="gridLayout_6">
-            <item row="0" column="0">
-             <layout class="QGridLayout" name="gridLayout_4">
-              <item row="0" column="0">
-               <widget class="QCheckBox" name="chipEraseDone">
-              	<property name="enabled">
-                   <bool>false</bool>
-              	</property>
-	       </widget>	
-              </item>
-              <item row="0" column="1">
-               <widget class="QLabel" name="fileName_5">
-                <property name="text">
-                 <string>Chip Erase Done (0x80)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QCheckBox" name="pconIdle">
-              	<property name="enabled">
-                   <bool>false</bool>
-              	</property>
-	       </widget>	
-              </item>
-              <item row="1" column="1">
-               <widget class="QLabel" name="fileName_6">
-                <property name="text">
-                 <string>PCON Idle (0x40)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QCheckBox" name="cpuHalted">
-              	<property name="enabled">
-                   <bool>false</bool>
-              	</property>
-	       </widget>	
-              </item>
-              <item row="2" column="1">
-               <widget class="QLabel" name="fileName_9">
-                <property name="text">
-                 <string>CPU Halted  (0x20)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0">
-               <widget class="QCheckBox" name="powerMode0">
-              	<property name="enabled">
-                   <bool>false</bool>
-              	</property>
-	       </widget>	
-              </item>
-              <item row="3" column="1">
-               <widget class="QLabel" name="fileName_10">
-                <property name="text">
-                 <string>Power Mode 0 (0x10)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0">
-               <widget class="QCheckBox" name="haltStatus">
-              	<property name="enabled">
-                   <bool>false</bool>
-              	</property>
-	       </widget>	
-              </item>
-              <item row="4" column="1">
-               <widget class="QLabel" name="fileName_11">
-                <property name="text">
-                 <string>Halt Status  (0x08)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="0">
-               <widget class="QCheckBox" name="debugLocked">
-              	<property name="enabled">
-                   <bool>false</bool>
-              	</property>
-	       </widget>	
-              </item>
-              <item row="5" column="1">
-               <widget class="QLabel" name="fileName_12">
-                <property name="text">
-                 <string>Debug Locked  (0x04)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="6" column="0">
-               <widget class="QCheckBox" name="oscillatorStable">
-              	<property name="enabled">
-                   <bool>false</bool>
-              	</property>
-	       </widget>	
-              </item>
-              <item row="6" column="1">
-               <widget class="QLabel" name="fileName_13">
-                <property name="text">
-                 <string>Oscillator Stable (0x02)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="7" column="0">
-               <widget class="QCheckBox" name="stackOverflow">
-              	<property name="enabled">
-                   <bool>false</bool>
-              	</property>
-	       </widget>	
-              </item>
-              <item row="7" column="1">
-               <widget class="QLabel" name="fileName_14">
-                <property name="text">
-                 <string>Stack Overflow  (0x01)</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer_8">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>17</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_7">
-         <item>
-          <widget class="QGroupBox" name="groupBox_2">
-           <property name="title">
-            <string>CC Config Byte</string>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_7">
-            <item row="0" column="0">
-             <layout class="QGridLayout" name="gridLayout_5">
-              <item row="2" column="1">
-               <widget class="QLabel" name="fileName_17">
-                <property name="text">
-                 <string>Timer Suspend</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLabel" name="fileName_15">
-                <property name="text">
-                 <string>Timers Off</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QCheckBox" name="dmaPause">
-              	<property name="enabled">
-                   <bool>false</bool>
-              	</property>
-	       </widget>	
-              </item>
-              <item row="3" column="1">
-               <widget class="QLabel" name="fileName_18">
-                <property name="text">
-                 <string>Sel Flash Info</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <widget class="QCheckBox" name="timersOff">
-              	<property name="enabled">
-                   <bool>false</bool>
-              	</property>
-	       </widget>	
-              </item>
-              <item row="2" column="0">
-               <widget class="QCheckBox" name="timerSuspend">
-              	<property name="enabled">
-                   <bool>false</bool>
-              	</property>
-	       </widget>	
-              </item>
-              <item row="3" column="0">
-               <widget class="QCheckBox" name="selFlashInfo">
-              	<property name="enabled">
-                   <bool>false</bool>
-              	</property>
-	       </widget>	
-              </item>
-              <item row="1" column="1">
-               <widget class="QLabel" name="fileName_16">
-                <property name="text">
-                 <string>DMA Pause</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_9">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>17</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_8">
-         <item>
-          <widget class="QGroupBox" name="groupBox_8">
+          <widget class="QLabel" name="statusLine">
            <property name="minimumSize">
             <size>
-             <width>131</width>
+             <width>100</width>
              <height>0</height>
             </size>
            </property>
-           <property name="title">
-            <string>Registers</string>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_2">
-            <item row="1" column="2" colspan="3">
-             <widget class="QLabel" name="REG_A">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="5">
-             <widget class="QLabel" name="label_15">
-              <property name="text">
-               <string>DPL0:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="6">
-             <widget class="QLabel" name="REG_DPL0">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="0">
-             <widget class="QLabel" name="label_7">
-              <property name="text">
-               <string>R3:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="5">
-             <widget class="QLabel" name="label_16">
-              <property name="text">
-               <string>DPL1:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="6">
-             <widget class="QLabel" name="REG_DPL1">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_2">
-              <property name="text">
-               <string>A:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label">
-              <property name="text">
-               <string>PC:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="6">
-             <widget class="QLabel" name="REG_B">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="5">
-             <widget class="QLabel" name="label_13">
-              <property name="text">
-               <string>SP:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="6">
-             <widget class="QLabel" name="REG_SP">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="0">
-             <widget class="QLabel" name="label_4">
-              <property name="text">
-               <string>R0:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="2" colspan="2">
-             <widget class="QLabel" name="REG_R0">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="5">
-             <widget class="QLabel" name="label_8">
-              <property name="text">
-               <string>R4:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="6">
-             <widget class="QLabel" name="REG_R4">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="0">
-             <widget class="QLabel" name="label_5">
-              <property name="text">
-               <string>R1:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="1" colspan="2">
-             <widget class="QLabel" name="REG_R1">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="5">
-             <widget class="QLabel" name="label_9">
-              <property name="text">
-               <string>R5:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="6">
-             <widget class="QLabel" name="REG_R5">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="7" column="0">
-             <widget class="QLabel" name="label_6">
-              <property name="text">
-               <string>R2:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="7" column="1" colspan="2">
-             <widget class="QLabel" name="REG_R2">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="7" column="6">
-             <widget class="QLabel" name="REG_R6">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="1" colspan="2">
-             <widget class="QLabel" name="REG_R3">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="5">
-             <widget class="QLabel" name="label_11">
-              <property name="text">
-               <string>R7:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="6">
-             <widget class="QLabel" name="REG_R7">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="2" colspan="2">
-             <widget class="QLabel" name="REG_DPH1">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="7" column="5">
-             <widget class="QLabel" name="label_10">
-              <property name="text">
-               <string>R6:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="5">
-             <widget class="QLabel" name="label_3">
-              <property name="text">
-               <string>B:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_12">
-              <property name="text">
-               <string>PSW:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="label_14">
-              <property name="text">
-               <string>DHP0:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0">
-             <widget class="QLabel" name="label_17">
-              <property name="text">
-               <string>DPH1:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="2" colspan="3">
-             <widget class="QLabel" name="REG_PSW">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1" colspan="6">
-             <widget class="QLabel" name="REG_PC">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="2" colspan="3">
-             <widget class="QLabel" name="REG_DPH0">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_10">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
-          <widget class="QPushButton" name="getStatus">
            <property name="text">
-            <string>Get Status</string>
+            <string/>
            </property>
           </widget>
          </item>
-         <item>
-          <spacer name="horizontalSpacer_6">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>17</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
         </layout>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_9">
-     <item>
-      <widget class="QLabel" name="Message_2">
-       <property name="text">
-        <string>Status:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="statusLine">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
+     </widget>
+    </widget>
    </item>
   </layout>
  </widget>

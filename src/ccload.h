@@ -53,6 +53,7 @@ public:
      * Default Destructor
      */
     virtual ~ccload();
+    virtual void closeEvent(QCloseEvent *event);
 
 private slots:
 

@@ -44,7 +44,9 @@ class KUrl;
 
 class MyThread;
 
-class ccloadView : public QWidget, public Ui::Form
+
+//class ccloadView : public QWidget, public Ui::Form
+class ccloadView : public QWidget
 {
     Q_OBJECT
 public:
