@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 ttylock::ttylock(QString t)
 {
