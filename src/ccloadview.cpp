@@ -1293,6 +1293,7 @@ ccloadView::Connect()
 		//port.Handshake = Handshake.None;
 		//port.DtrEnable = true;
 
+		    ::write(port, "+++ATRF\m\n", 9);	// switch to prog mode
 		    if (!sendCommand("", "Wait for start").isEmpty()) {
 			    form.Connect->setText("Disconnect");
 			    CLIENT(prod);
