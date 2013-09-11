@@ -1605,8 +1605,10 @@ printf("loop valid %d off %d\n", valid, off);fflush(stdout);
 		}
 	}
 	if (form.writeMAC->isChecked() && form.autoIncMAC->isChecked()) {
+		char t[10];
 		maclow++;
-		form.lowMAC->setText(QString().arg(maclow,8,16,'0'));
+		snprintf(t, sizeof(t), "%08X", maclow);
+		form.lowMAC->setText(QString::fromAscii(&t[0]));
 	}
 
 	DEBUG_INIT(false);
