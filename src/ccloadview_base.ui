@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>808</width>
-    <height>938</height>
+    <width>821</width>
+    <height>949</height>
    </rect>
   </property>
   <property name="baseSize">
@@ -30,8 +30,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>794</width>
-        <height>924</height>
+        <width>807</width>
+        <height>935</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -365,6 +365,13 @@
                 <string>Read/Write</string>
                </property>
                <layout class="QGridLayout" name="gridLayout_10">
+                <item row="5" column="2" colspan="2">
+                 <widget class="QProgressBar" name="progress">
+                  <property name="value">
+                   <number>0</number>
+                  </property>
+                 </widget>
+                </item>
                 <item row="0" column="0" colspan="2">
                  <widget class="QPushButton" name="selectFile">
                   <property name="enabled">
@@ -382,16 +389,6 @@
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="0">
-                 <widget class="QPushButton" name="readFile">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="text">
-                   <string>Read</string>
-                  </property>
-                 </widget>
-                </item>
                 <item row="2" column="1" colspan="2">
                  <widget class="QCheckBox" name="verifyAfterWrite">
                   <property name="text">
@@ -399,6 +396,16 @@
                   </property>
                   <property name="checked">
                    <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QPushButton" name="eraseChip">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Erase Chip</string>
                   </property>
                  </widget>
                 </item>
@@ -456,13 +463,6 @@
                   </property>
                  </widget>
                 </item>
-                <item row="5" column="2" colspan="2">
-                 <widget class="QProgressBar" name="progress">
-                  <property name="value">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                </item>
                 <item row="1" column="0" colspan="2">
                  <widget class="QPushButton" name="loadFile">
                   <property name="enabled">
@@ -473,13 +473,41 @@
                   </property>
                  </widget>
                 </item>
-                <item row="5" column="0">
-                 <widget class="QPushButton" name="eraseChip">
+                <item row="2" column="0">
+                 <widget class="QPushButton" name="readFile">
                   <property name="enabled">
                    <bool>false</bool>
                   </property>
                   <property name="text">
-                   <string>Erase Chip</string>
+                   <string>Read</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="2">
+                 <widget class="QLineEdit" name="hiMAC">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="3">
+                 <widget class="QLineEdit" name="lowMAC">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QCheckBox" name="writeMAC">
+                  <property name="text">
+                   <string>Write MAC</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="3">
+                 <widget class="QCheckBox" name="autoIncMAC">
+                  <property name="text">
+                   <string>Auto Inc MAC</string>
                   </property>
                  </widget>
                 </item>

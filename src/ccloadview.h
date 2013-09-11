@@ -108,6 +108,7 @@ private:
 	void setConfigLabels(int config);
 	void setConnected();
 	void setDisconnected();
+	void btnMACwrite_Click_set();
 	bool DEBUG_INIT();
 	bool DEBUG_INIT(bool soft);
 	void set_REGISTER(QLabel *, int v);
@@ -182,6 +183,10 @@ private slots:
 	void btnErase_Click();
 	void btnReadLocation_Click();
 	void btnSetPC_Click();
+	void btnMACwrite_Click();
+	void btnMACautoInc_Click();
+	void btnMAClow_Click();
+	void btnMAChi_Click();
 };
 
 #endif // ccloadVIEW_H

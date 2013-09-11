@@ -91,7 +91,16 @@ ccloadView::ccloadView(QWidget *)
 	form.loadFile->setEnabled(true);
     form.autoConnect->setChecked(settings->value("autoConnect", true).toBool());   
     form.erasePage->setChecked(settings->value("erasePage", true).toBool());   
-    form.verifyAfterWrite->setChecked(settings->value("verifyAfterWrite", true).toBool());   
+    form.verifyAfterWrite->setChecked(settings->value("verifyAfterWrite", false).toBool());   
+    form.writeMAC->setChecked(settings->value("writeMAC", false).toBool());   
+    form.autoIncMAC->setChecked(settings->value("autoIncMAC", false).toBool());   
+    form.hiMAC->setText(settings->value("hiMAC", "00000000").toString());
+    form.lowMAC->setText(settings->value("lowMAC", "00000000").toString());
+    form.hiMAC->setMaxLength(8);
+    form.lowMAC->setMaxLength(8);
+    form.lowMAC->setInputMask("HHHHHHHH");
+    form.hiMAC->setInputMask("HHHHHHHH");
+    btnMACwrite_Click_set();
     connect(form.DD, SIGNAL(clicked()), this, SLOT(btnFlashDD_Click()));
     connect(form.DC, SIGNAL(clicked()), this, SLOT(btnFlashDC_Click()));
     connect(form.RST, SIGNAL(clicked()), this, SLOT(btnFlashRST_Click()));
@@ -114,6 +123,10 @@ ccloadView::ccloadView(QWidget *)
     connect(form.autoConnect, SIGNAL(clicked()), this, SLOT(btnAuto_Click()));
     connect(form.erasePage, SIGNAL(clicked()), this, SLOT(btnErasePage_Click()));
     connect(form.verifyAfterWrite, SIGNAL(clicked()), this, SLOT(btnVerify_Click()));
+    connect(form.writeMAC, SIGNAL(stateChanged(int)), this, SLOT(btnMACwrite_Click()));
+    connect(form.autoIncMAC, SIGNAL(stateChanged(int)), this, SLOT(btnMACautoInc_Click()));
+    connect(form.lowMAC, SIGNAL(textChanged(QString)), this, SLOT(btnMAClow_Click()));
+    connect(form.hiMAC, SIGNAL(textChanged(QString)), this, SLOT(btnMAChi_Click()));
     
     connect(form.chipModel, SIGNAL(currentIndexChanged(int)), this, SLOT(cbChipModel_SelectedIndexChanged(int)));
     thread = new MyThread(this);
@@ -1521,10 +1534,24 @@ ccloadView::btnErase_Click()
 void
 ccloadView::btnWrite_Click()
 {
+	unsigned int machi=0, maclow=0;
+
 	if (form.fileName->text().isEmpty()) {
 	    btnSelectFile_Click();
 	    if (form.fileName->text().isEmpty() || maddr == 0) 
 		return;
+	}
+	if (form.writeMAC->isChecked()) {
+		machi = form.hiMAC->text().toUInt(0, 16);
+		maclow = form.lowMAC->text().toUInt(0, 16);
+		image[14] = machi>>24;
+		image[15] = machi>>16;
+		image[16] = machi>>8;
+		image[17] = machi;
+		image[22] = maclow>>24;
+		image[23] = maclow>>16;
+		image[24] = maclow>>8;
+		image[25] = maclow;
 	}
 	int blen=0;
 	bool valid = true;
@@ -1577,6 +1604,11 @@ printf("loop valid %d off %d\n", valid, off);fflush(stdout);
 			pageAddress += (long)FLASH_PAGE_SIZE;
 		}
 	}
+	if (form.writeMAC->isChecked() && form.autoIncMAC->isChecked()) {
+		maclow++;
+		form.lowMAC->setText(QString().arg(maclow,8,16,'0'));
+	}
+
 	DEBUG_INIT(false);
 	form.progress->setValue(100);
 }
@@ -1725,5 +1757,44 @@ ccloadView::btnRun_Click()
 	}
 	RESUME();
 	inDebugMode = false;
+}
+void
+ccloadView::btnMACwrite_Click_set()
+{
+	if (form.writeMAC->isChecked()) {
+		form.autoIncMAC->setEnabled(true);
+		form.lowMAC->setEnabled(true);
+		form.hiMAC->setEnabled(true);
+	} else {
+		form.autoIncMAC->setEnabled(false);
+		form.lowMAC->setEnabled(false);
+		form.hiMAC->setEnabled(false);
+	}
+}
+void
+ccloadView::btnMACwrite_Click()
+{
+	btnMACwrite_Click_set();
+	settings->setValue("writeMAC", form.writeMAC->isChecked());
+	settings->sync();
+}
+void
+ccloadView::btnMACautoInc_Click()
+{
+	settings->setValue("autoIncMAC", form.autoIncMAC->isChecked());
+	settings->sync();
+}
+
+void
+ccloadView::btnMAClow_Click()
+{
+	settings->setValue("lowMAC", form.lowMAC->text());
+	settings->sync();
+}
+void
+ccloadView::btnMAChi_Click()
+{
+	settings->setValue("hiMAC", form.hiMAC->text());
+	settings->sync();
 }
 //#include "ccloadview.moc"
