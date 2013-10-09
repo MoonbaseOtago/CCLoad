@@ -29,6 +29,7 @@
 #include <QtGui/QFileDialog>
 #include <QThread>
 #include <QFileInfo>
+#include <QTimer>
 #include <iostream>
 
 class Sleeper : public QThread
@@ -83,15 +84,18 @@ ccloadView::ccloadView(QWidget *)
     form.setupUi(this);
     lock = NULL;
     maddr=0;
+    app_msize = 0;
     startPC=0;
     startPCvalid=true;
+    connected = 0;
     settings = new QSettings("MoonbaseOtago", "CCload");
     form.fileName->setText(settings->value("fileName", "").toString());
-    if (!form.fileName->text().isEmpty())
-	form.loadFile->setEnabled(true);
+    form.fileName_App->setText(settings->value("fileName_App", "").toString());
     form.autoConnect->setChecked(settings->value("autoConnect", true).toBool());   
     form.erasePage->setChecked(settings->value("erasePage", true).toBool());   
     form.verifyAfterWrite->setChecked(settings->value("verifyAfterWrite", false).toBool());   
+    form.erasePage_App->setChecked(settings->value("erasePage_App", true).toBool());   
+    form.verifyAfterWrite_App->setChecked(settings->value("verifyAfterWrite_App", false).toBool());   
     form.writeMAC->setChecked(settings->value("writeMAC", false).toBool());   
     form.autoIncMAC->setChecked(settings->value("autoIncMAC", false).toBool());   
     form.hiMAC->setText(settings->value("hiMAC", "00000000").toString());
@@ -107,11 +111,15 @@ ccloadView::ccloadView(QWidget *)
     connect(form.Connect, SIGNAL(clicked()), this, SLOT(btnConnect_Click()));
     connect(this, SIGNAL(startupclick()), this, SLOT(btnConnect_Click()));
     connect(form.selectFile, SIGNAL(clicked()), this, SLOT(btnSelectFile_Click()));
+    connect(form.selectFile_App, SIGNAL(clicked()), this, SLOT(btnSelectFile_App_Click()));
     connect(form.readFile, SIGNAL(clicked()), this, SLOT(btnRead_Click()));
+    connect(form.readFile_App, SIGNAL(clicked()), this, SLOT(btnRead_App_Click()));
     connect(form.loadFile, SIGNAL(clicked()), this, SLOT(btnSelectLoad_Click()));
+    connect(form.loadFile_App, SIGNAL(clicked()), this, SLOT(btnSelectLoad_App_Click()));
     connect(form.Debug, SIGNAL(clicked()), this, SLOT(btnDebug_Click()));
     connect(form.Production, SIGNAL(clicked()), this, SLOT(btnProduction_Click()));
     connect(form.writeFile, SIGNAL(clicked()), this, SLOT(btnWrite_Click()));
+    connect(form.writeFile_App, SIGNAL(clicked()), this, SLOT(btnWrite_App_Click()));
     connect(form.eraseChip, SIGNAL(clicked()), this, SLOT(btnErase_Click()));
     connect(form.getStatus, SIGNAL(clicked()), this, SLOT(btnGetStatus_Click()));
     connect(form.flashCC, SIGNAL(clicked()), this, SLOT(btnFlashCC_Click()));
@@ -122,7 +130,9 @@ ccloadView::ccloadView(QWidget *)
     connect(form.halt, SIGNAL(clicked()), this, SLOT(btnHalt_Click()));
     connect(form.autoConnect, SIGNAL(clicked()), this, SLOT(btnAuto_Click()));
     connect(form.erasePage, SIGNAL(clicked()), this, SLOT(btnErasePage_Click()));
+    connect(form.erasePage_App, SIGNAL(clicked()), this, SLOT(btnErasePage_App_Click()));
     connect(form.verifyAfterWrite, SIGNAL(clicked()), this, SLOT(btnVerify_Click()));
+    connect(form.verifyAfterWrite_App, SIGNAL(clicked()), this, SLOT(btnVerify_App_Click()));
     connect(form.writeMAC, SIGNAL(stateChanged(int)), this, SLOT(btnMACwrite_Click()));
     connect(form.autoIncMAC, SIGNAL(stateChanged(int)), this, SLOT(btnMACautoInc_Click()));
     connect(form.lowMAC, SIGNAL(textChanged(QString)), this, SLOT(btnMAClow_Click()));
@@ -133,6 +143,43 @@ ccloadView::ccloadView(QWidget *)
     thread->start();
     if (form.autoConnect->isChecked())
 	startupclick();
+    form.selectFile->setEnabled(true);
+    form.selectFile_App->setEnabled(true);
+    if (!form.fileName->text().isEmpty())
+	form.loadFile->setEnabled(true);
+    if (!form.fileName_App->text().isEmpty())
+	form.loadFile_App->setEnabled(true);
+    form.verifyFile->setEnabled(false);
+    form.verifyFile_App->setEnabled(false);
+
+}
+
+void
+ccloadView::idle()
+{
+	char buff[21];
+
+	int i = thread->consoleRead(&buff[0], sizeof(buff)-1);
+	if (i > 0) {
+		buff[i] = 0;
+		QString s(&buff[0]);
+		consoleDisplay(s);
+	}
+}
+
+void
+ccloadView::consoleDisplay(QString &s)
+{
+     	int p = form.console->textCursor().position();
+     	form.console->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
+     	form.console->insertPlainText(s);
+     	form.console->textCursor().setPosition(p);
+}
+
+void
+ccloadView::setIdleTimer()
+{
+	QTimer::singleShot(0, this, SLOT(idle()));
 }
 
 void
@@ -145,6 +192,18 @@ void
 ccloadView::btnVerify_Click()
 {
 	settings->setValue("verifyAfterWrite", form.verifyAfterWrite->isChecked());
+	settings->sync();
+}
+void
+ccloadView::btnErasePage_App_Click()
+{
+	settings->setValue("erasePage_App", form.erasePage_App->isChecked());
+	settings->sync();
+}
+void
+ccloadView::btnVerify_App_Click()
+{
+	settings->setValue("verifyAfterWrite_App", form.verifyAfterWrite_App->isChecked());
 	settings->sync();
 }
 void
@@ -413,19 +472,29 @@ ccloadView::setConfigLabels(int config)
 void
 ccloadView::setConnected()
 {
+	connected = 1;
 	form.readLocation->setEnabled(true);
 	form.setPC->setEnabled(true);
 	form.run->setEnabled(true);
 	form.step->setEnabled(true);
 	form.halt->setEnabled(true);
-	form.selectFile->setEnabled(true);
 	form.erasePage->setChecked(true);
 	form.Connect->setText("Disconnect");
+	if (maddr > 0) {
+		form.readFile->setEnabled(true);
+		form.writeFile->setEnabled(true);
+	}
+	if (app_msize > 0) {
+		form.readFile_App->setEnabled(true);
+		form.writeFile_App->setEnabled(true);
+	}
+	form.eraseChip->setEnabled(true);
 }
 
 void
 ccloadView::setDisconnected()
 {
+	connected = 0;
 	if (port >= 0) {
 		::close(port);
 		delete lock;
@@ -450,10 +519,11 @@ ccloadView::setDisconnected()
 	form.run->setEnabled(false);
 	form.step->setEnabled(false);
 	form.halt->setEnabled(false);
-	form.verifyFile->setEnabled(false);
 	form.writeFile->setEnabled(false);
+	form.writeFile_App->setEnabled(false);
 	form.eraseChip->setEnabled(false);
 	form.readFile->setEnabled(false);
+	form.readFile_App->setEnabled(false);
 	form.chipSize->setText("");
 	form.revision->setText("");
 	form.chipSeries->setText("");
@@ -800,6 +870,8 @@ ccloadView::HALT()
 	QString response = sendCommand("XW140R1", "Sending HALT ...");
 	if (parseOK(response)) {
 		form.statusLine->setText("Halted");
+		QString s("-- halt --\n");
+		consoleDisplay(s);
 		unsigned char d;
 		if (getDataByte(0, getTokenREAD(response), d)) {
 			setStatusLabels(d);
@@ -811,7 +883,7 @@ ccloadView::HALT()
 }
 
 bool
-ccloadView::RESUME()
+ccloadView::RESUME(bool run)
 {
 	if (!DEBUG_INIT(1))
 		return false;
@@ -819,6 +891,10 @@ ccloadView::RESUME()
 	if (parseOK(response)) {
 	        unsigned char d;   
 		form.statusLine->setText("Running");
+		if (run) {
+			QString s("-- run  --\n");
+			consoleDisplay(s);
+		}
 		if (getDataByte(0, getTokenREAD(response), d)) {
 			setStatusLabels(d);
 		}
@@ -965,13 +1041,13 @@ ccloadView::CLOCK_INIT()
 	if (DEBUG_INSTR(0x75, 0xC6, 0x00, &d)) {					//MOV CLKCON, 0x00
 		int retry = 5;
 		unsigned char sleepReg;
-printf("CLOCK_INIT sleeping\n");fflush(stdout);
+//printf("CLOCK_INIT sleeping\n");fflush(stdout);
 		Sleeper::msleep(100);
 		while (retry-- > 0) {
-printf("CLOCK_INIT read sleep retry=%d\n", retry);fflush(stdout);
+//printf("CLOCK_INIT read sleep retry=%d\n", retry);fflush(stdout);
 			if (!DEBUG_INSTR(0xE5, 0x9E, &sleepReg))	//MOV A, SLEEP; (sleepReg = A)
 				return false;
-printf("sleepReg=0x%x\n", sleepReg);fflush(stdout);
+//printf("sleepReg=0x%x\n", sleepReg);fflush(stdout);
 			if ((sleepReg & 0x40) == 0) {
 				retry = 5;
 				while (retry-- > 0) {
@@ -1192,25 +1268,25 @@ ccloadView::WRITE_PAGE_FLASH(long iPageAddress, unsigned char *buffer, int lengt
 	addRoutine(routine, rlen, 0xA5);							 // 1: invalid?
 	addRoutine(routine, rlen, 0x80, 0xfd);						 	 //    jmp 1b
 	
-printf("writing debug inst\n");fflush(stdout);
+//printf("writing debug inst\n");fflush(stdout);
 	valid = valid ? DEBUG_INSTR(0x75, 0x9f, (unsigned char)0x00) : false; // map flash to 0x8000
 	valid = valid ? DEBUG_INSTR(0x75, 0xC7, 0x08) : false; 		      // map sram to 0x8000
-printf("routine =");for (int i=0;i<rlen; i++) printf(" %02x", routine[i]);printf("\n");fflush(stdout);
-printf("writing xdata data len=%d\n", length);fflush(stdout);
+//printf("routine =");for (int i=0;i<rlen; i++) printf(" %02x", routine[i]);printf("\n");fflush(stdout);
+//printf("writing xdata data len=%d\n", length);fflush(stdout);
 	valid = valid ? WRITE_XDATA_MEMORY(0x0000, buffer, length) : false;
-printf("writing xdata code rlen=%d\n", length);fflush(stdout);
+//printf("writing xdata code rlen=%d\n", length);fflush(stdout);
 	valid = valid ? WRITE_XDATA_MEMORY(0x0000 + FLASH_PAGE_SIZE, routine, rlen) : false;
-printf("setting PC=0x%x\n", 0x8000 + FLASH_PAGE_SIZE);fflush(stdout);
+//printf("setting PC=0x%x\n", 0x8000 + FLASH_PAGE_SIZE);fflush(stdout);
 	valid = valid ? SET_PC(0x8000 + FLASH_PAGE_SIZE) : false;
-printf("resuming\n");fflush(stdout);
-	valid = valid ? RESUME() : false;
+//printf("resuming\n");fflush(stdout);
+	valid = valid ? RESUME(0) : false;
 	if (valid) {
 		unsigned char status;
 		int retry = 20;
 		do {
 			READ_STATUS(status);
 			setStatusLabels(status);
-printf("read status=0x%x\n", status);fflush(stdout);
+//printf("read status=0x%x\n", status);fflush(stdout);
 			if ((status & CPU_HALTED) == CPU_HALTED)
 				return true;
 			Sleeper::msleep(100);
@@ -1306,7 +1382,7 @@ ccloadView::Connect()
 		//port.Handshake = Handshake.None;
 		//port.DtrEnable = true;
 
-		    ::write(port, "+++ATRF\m\n", 9);	// switch to prog mode
+		    ::write(port, "+++ATRF\r\n", 9);	// switch to prog mode
 		    if (!sendCommand("", "Wait for start").isEmpty()) {
 			    form.Connect->setText("Disconnect");
 			    CLIENT(prod);
@@ -1341,14 +1417,14 @@ void
 ccloadView::cbChipModel_SelectedIndexChanged(int)
 {
 	form.statusLine->setText("");
-printf("cbChipModel_SelectedIndexChanged\n");fflush(stdout);
+//printf("cbChipModel_SelectedIndexChanged\n");fflush(stdout);
 	if (form.chipModel->currentIndex() >= 0) {
 		char **p;
 		QString model = form.chipModel->currentText() + ";";
-printf("model='%s'\n",model.toLatin1().data_ptr());fflush(stdout);
+//printf("model='%s'\n",model.toLatin1().data_ptr());fflush(stdout);
 		for(p = &ChipDescriptors[0]; *p; p++) {
 			QString descriptor(*p);
-printf("descriptor='%s'\n",descriptor.toLatin1().data_ptr());fflush(stdout);
+//printf("descriptor='%s'\n",descriptor.toLatin1().data_ptr());fflush(stdout);
 			if (descriptor.isEmpty())
 				continue;
 			if (descriptor.startsWith(model)) {
@@ -1360,13 +1436,6 @@ printf("descriptor='%s'\n",descriptor.toLatin1().data_ptr());fflush(stdout);
 				if (ok1&&ok2&&ok3) {
 					form.chipSize->setText(QString("").sprintf("%dK", FLASH_SIZE / 1024));
 					
-					form.verifyFile->setEnabled(true);
-					form.writeFile->setEnabled(true);
-					form.eraseChip->setEnabled(true);
-					form.readFile->setEnabled(true);
-					form.run->setEnabled(true);
-					form.step->setEnabled(true);
-					form.halt->setEnabled(true);
 					return;
 				}
 				form.statusLine->setText("Bad chip descriptor(s)");
@@ -1376,16 +1445,6 @@ printf("descriptor='%s'\n",descriptor.toLatin1().data_ptr());fflush(stdout);
 		if (form.statusLine->text().isEmpty())
 			form.statusLine->setText(QString("Chip %1 not found in chip descriptors").arg(form.chipModel->currentText()));
 	}
-	form.verifyFile->setEnabled(false);
-	form.writeFile->setEnabled(false);
-	form.eraseChip->setEnabled(false);
-	form.readFile->setEnabled(false);
-	form.readLocation->setEnabled(false);
-	form.setPC->setEnabled(false);
-	form.run->setEnabled(false);
-	form.step->setEnabled(false);
-	form.halt->setEnabled(false);
-
 	form.chipSize->setText("");
 }
 
@@ -1436,15 +1495,29 @@ ccloadView::btnSelectFile_Click()
 }
 
 void
+ccloadView::btnSelectFile_App_Click()
+{
+	QFileDialog* fd = new QFileDialog( this ,"",form.fileName_App->text());
+	fd->setFileMode( QFileDialog::AnyFile);
+	fd->show();
+	if ( fd->exec() == QDialog::Accepted ) {
+	    QString fileName = fd->selectedFiles()[0];
+	    form.fileName_App->setText(fileName);
+	    settings->setValue("fileName_App", fileName);
+	    settings->sync();
+	    btnSelectLoad_App_Click();
+	}
+}
+
+void
 ccloadView::btnSelectLoad_Click()
 {
         QString fileName = form.fileName->text();
 
-	form.verifyFile->setEnabled(false);
-	form.writeFile->setEnabled(false);
-	form.readFile->setEnabled(false);
 	if (fileName.isEmpty()) {
 		form.loadFile->setEnabled(false);
+		form.writeFile->setEnabled(false);
+		form.readFile->setEnabled(false);
 		return;
 	}
 	form.loadFile->setEnabled(true);
@@ -1453,6 +1526,7 @@ ccloadView::btnSelectLoad_Click()
 	
 	if (!f.open(QIODevice::ReadOnly)) {
 		form.statusLine->setText(QString("Can't open file %1").arg(fileName));
+		maddr = 0;
 		return;
 	}
 	form.startAddress->setText("0x0000");
@@ -1472,6 +1546,7 @@ ccloadView::btnSelectLoad_Click()
 		    if (first) {
 			form.statusLine->setText(QString("File %1 not in intel hex format").arg(fileName));
 			f.close();
+			maddr = 0;
 			return;
 		    }
 		    break;
@@ -1519,10 +1594,62 @@ ccloadView::btnSelectLoad_Click()
 	}	 
 	form.endAddress->setText(QString("0x%1").arg(maddr, 4, 16, QLatin1Char('0')));
 	f.close();
-	form.verifyFile->setEnabled(true);
-	form.writeFile->setEnabled(true);
-	form.readFile->setEnabled(true);
+	if (maddr > 0 && connected) {
+		form.writeFile->setEnabled(true);
+		form.readFile->setEnabled(true);
+	}
 	
+}
+
+void
+ccloadView::btnSelectLoad_App_Click()
+{
+        QString fileName = form.fileName_App->text();
+	unsigned char k[16];
+	unsigned char h[4];
+
+	form.writeFile_App->setEnabled(false);
+	form.readFile_App->setEnabled(false);
+	if (fileName.isEmpty()) {
+		form.loadFile_App->setEnabled(false);
+		return;
+	}
+	form.loadFile_App->setEnabled(true);
+
+	QFile f(fileName);
+	
+	if (!f.open(QIODevice::ReadOnly)) {
+		form.statusLine->setText(QString("Can't open file %1").arg(fileName));
+		app_msize = 0;
+		return;
+	}
+	if (f.read((char*)&h[0], 4) != 4) {
+fail:
+		form.statusLine->setText(QString("Bad file format %1").arg(fileName));
+		f.close();
+		app_msize = 0;
+		return;
+	}
+	if (f.read((char*)&k[0], 16) != 16) 
+		goto fail;
+	int s = h[0] | (h[1]<<8);
+	int l = h[2] | (h[3]<<8);
+	if ((s&0x3ff) != 0)
+		goto fail;
+	if ((s+l) > 65536)
+		goto fail;
+	memset(&app_image[0], 0xff, sizeof(app_image));
+	if (f.read((char*)&app_image[s], l) != l) 
+		goto fail;
+	app_mstart = s;
+	app_msize = l;
+	f.close();
+	form.startAddress_App->setText(QString("0x%1").arg(app_mstart, 4, 16, QLatin1Char('0')));
+	form.endAddress_App->setText(QString("0x%1").arg(app_mstart+app_msize-1, 4, 16, QLatin1Char('0')));
+	if (app_msize > 0 && connected) {
+		form.writeFile_App->setEnabled(true);
+		form.readFile_App->setEnabled(true);
+	}
 }
 
 void
@@ -1616,6 +1743,71 @@ printf("loop valid %d off %d\n", valid, off);fflush(stdout);
 }
 
 void
+ccloadView::btnWrite_App_Click()
+{
+	if (form.fileName_App->text().isEmpty()) {
+	    btnSelectFile_App_Click();
+	    if (form.fileName_App->text().isEmpty() || app_msize == 0) 
+		return;
+	}
+	if (!app_msize) 
+		return;
+	int blen=0;
+	bool valid = true;
+	long length = app_msize;
+//printf("setting DEBUG_INIT(false)\n");fflush(stdout);
+	valid = valid ? DEBUG_INIT(false) : false;
+//printf("gave %d\n", valid);fflush(stdout);
+//printf("setting CLOCK_INIT\n");fflush(stdout);
+	valid = valid ? CLOCK_INIT() : false;
+//printf("gave %d\n", valid);fflush(stdout);
+//printf("FLASH_PAGE_SIZE 0x%x\n", FLASH_PAGE_SIZE);fflush(stdout);
+
+	form.progress->setMinimum(0);
+	form.progress->setMaximum((int)(100));
+	form.progress->setValue(0);
+
+	long pageAddress = app_mstart;
+	unsigned char *buffer;
+	int off = 0;
+	while (valid && length > 0) {
+//printf("loop valid %d off %d\n", valid, off);fflush(stdout);	  
+		form.progress->setValue(100*off/(app_msize));
+
+		buffer = &app_image[app_mstart+off];
+		if (length >= (long)FLASH_PAGE_SIZE) {
+			length -= (long)FLASH_PAGE_SIZE;
+			off += FLASH_PAGE_SIZE;
+		} else {
+			
+			off += length;
+			length = 0;
+		}
+		if (!isPageEmpty(buffer)) {
+			// valid =
+			WRITE_PAGE_FLASH(pageAddress, buffer, FLASH_PAGE_SIZE, form.erasePage_App->isChecked());
+			if (valid && form.verifyAfterWrite_App->isChecked()) {
+				unsigned char code[FLASH_PAGE_SIZE];
+				memset(code, 0xff, sizeof(code));
+				int clen;
+				valid = READ_FLASH_PAGE(pageAddress, FLASH_PAGE_SIZE, code, clen);
+				for (int i = 0; i < FLASH_PAGE_SIZE; ++i) {
+					if (buffer[i] != code[i]) {
+						form.statusLine->setText("Verify failed");
+						valid = false;
+						break;
+					}
+				}
+				form.statusLine->setText("Verify OK");
+			}
+			pageAddress += (long)FLASH_PAGE_SIZE;
+		}
+	}
+	DEBUG_INIT(false);
+	form.progress->setValue(100);
+}
+
+void
 ccloadView::btnDebug_Click()
 {
     prod = 0;
@@ -1629,6 +1821,44 @@ ccloadView::btnProduction_Click()
     prod = 1;
     if (port >= 0)
 	    CLIENT(1);
+}
+
+void
+ccloadView::btnRead_App_Click()
+{
+	if (form.fileName_App->text().isEmpty()) {
+	    btnSelectFile_App_Click();
+	    if (form.fileName_App->text().isEmpty()) 
+		return;
+	}
+	return;
+	FILE *fs = fopen(form.fileName_App->text().toAscii(), "w");
+	if (!fs) {
+		form.statusLine->setText("Error: file create failed");
+		return;
+	}
+	bool valid = true;
+	valid = valid ? DEBUG_INIT(false) : false;
+	valid = valid ? CLOCK_INIT() : false;
+
+	form.progress->setMinimum(0);
+	form.progress->setMaximum((int)(FLASH_SIZE / (long)FLASH_PAGE_SIZE));
+	form.progress->setValue(0);
+
+	long pageAddress = 0;
+	int blen = 0;
+	while (valid && pageAddress < FLASH_SIZE) {
+		unsigned char buffer[FLASH_PAGE_SIZE];
+		form.progress->setValue(form.progress->value()+1);
+		valid = valid ? READ_FLASH_PAGE(pageAddress, FLASH_PAGE_SIZE, buffer, blen) : false;
+		if (valid)
+			fwrite(buffer, 1, blen, fs);
+		pageAddress += FLASH_PAGE_SIZE;
+	}
+	if (fs)
+		fclose(fs);
+	DEBUG_INIT(false);
+	form.progress->setValue(0);
 }
 
 void
@@ -1687,7 +1917,10 @@ ccloadView::btnReadLocation_Click()
      res.append(QString(":"));
      for (int i = 0; i < len; i++)
 	 res.append(QString(" %1").arg(buffer[i],2,16,'0'));
-     thread->consoleWrite(res);
+     int p = form.console->textCursor().position();
+     form.console->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
+     form.console->insertPlainText(res);
+     form.console->textCursor().setPosition(p);
      addr += sizeof(buffer);
      form.readLocation->setText(QString("0x%1").arg(addr,4,16,'0'));
 }
@@ -1757,7 +1990,7 @@ ccloadView::btnRun_Click()
 		startPCvalid = 0;
 		SET_PC(startPC);
 	}
-	RESUME();
+	RESUME(1);
 	inDebugMode = false;
 }
 void

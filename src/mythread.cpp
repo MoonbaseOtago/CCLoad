@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
+
 void MyThread::run()
 {
     unsigned char buff[256];
@@ -32,6 +33,7 @@ void MyThread::run()
     
     while ( ! _bFinished ) {
 	if (view->port >= 0) {
+	    bool added = 0;
 	    l = ::read(view->port, &buff[0], sizeof(buff));
 	    if (l > 0) {
 		mutex.lock();
@@ -43,12 +45,13 @@ void MyThread::run()
 			    continue;
 			}
 			printf("%c", buff[i]);fflush(stdout);
-#ifdef NOTDEF
-			int p = view->form.console->textCursor().position();
-			view->form.console->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
-			view->form.console->insertPlainText(QChar(buff[i]));
-			view->form.console->textCursor().setPosition(p);
-#endif
+			if (buff[i] != '\r' && qsize < sizeof(q)) {
+				added = 1;
+				qsize++;
+				*qin++ = buff[i];
+				if (qin == &q[sizeof(q)])
+					qin = &q[0];
+			}
 		    } else {
 			if (buff[i] == 0xfc) {
 			    escape = 1;
@@ -63,6 +66,8 @@ void MyThread::run()
 		    }
 		}
 		mutex.unlock();
+	    	if (added) 
+		    view->setIdleTimer();
 		continue;
 	    }
 	}
@@ -71,15 +76,21 @@ void MyThread::run()
     }
 }
 
-void
-MyThread::consoleWrite(QString s)
+int
+MyThread::consoleRead(char *b, int l)
 {
+    int res = 0;
     mutex.lock();
-    int p = view->form.console->textCursor().position();
-    view->form.console->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
-    view->form.console->insertPlainText(s);
-    view->form.console->textCursor().setPosition(p);
+    while (qsize && l) {
+	res++;
+	qsize--;
+	l--;
+	*b++ = *qout++;
+	if (qout == &q[sizeof(q)])
+		qout = &q[0];
+    }
     mutex.unlock();
+    return res;
 }
 
 int MyThread::read(char *b, int l)
@@ -99,7 +110,10 @@ int MyThread::read(char *b, int l)
 
 MyThread::MyThread(ccloadView *parent): QThread(parent),_bFinished(0), view(parent), save_in(0), saved(0), save_out(0)
 {
-     
+	qin=&q[0];
+	qout=&q[0];
+	qsize = 0;
+
 }
 
 MyThread::~MyThread()

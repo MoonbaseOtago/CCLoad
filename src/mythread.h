@@ -37,10 +37,14 @@ protected:
     int saved, save_in, save_out;
     unsigned char save_buffer[256];
     QMutex mutex;
+    char q[2048];
+    char *qin;
+    char *qout;
+    int qsize;
 
 public:
     MyThread(ccloadView *parent);
-    void consoleWrite(QString s);
+    int consoleRead(char *b, int count);
     virtual ~MyThread();
     int read(char *b, int l);
 };

@@ -62,6 +62,7 @@ public:
 
     int port;
     Ui::Form form;
+    void setIdleTimer();
 
 private:
 
@@ -88,6 +89,9 @@ private:
 	MyThread *thread;
 	int maddr;
 	unsigned char image[0x10000];
+	int app_mstart;
+	int app_msize;
+	unsigned char app_image[0x10000];
 
 private:
 	QString prepareCommand(QString cmd);
@@ -126,7 +130,7 @@ private:
 	bool GET_CHIP_ID();
 	bool GET_CHIP_ID(unsigned char &id, unsigned char &revision);
 	bool HALT();
-	bool RESUME();
+	bool RESUME(bool run);
 	bool STEP();
 	bool MASS_ERASE_FLASH();
 	bool CHIP_ERASE();
@@ -156,6 +160,8 @@ private:
 	QSettings *settings;
 	bool startPCvalid;
 	int startPC;
+	bool connected;
+	void consoleDisplay(QString &s);
 	
 
 signals:
@@ -167,19 +173,25 @@ private slots:
 	void btnConnect_Click();
 	void cbChipModel_SelectedIndexChanged(int);
 	void btnSelectFile_Click();
+	void btnSelectFile_App_Click();
 	void btnWrite_Click();
+	void btnWrite_App_Click();
 	void btnDebug_Click();
 	void btnProduction_Click();
 	void btnRead_Click();
+	void btnRead_App_Click();
 	void btnGetStatus_Click();
 	void btnFlashCC_Click();
 	void btnRun_Click();
 	void btnStep_Click();
 	void btnHalt_Click();
 	void btnSelectLoad_Click();
+	void btnSelectLoad_App_Click();
 	void btnAuto_Click();
 	void btnVerify_Click();
+	void btnVerify_App_Click();
 	void btnErasePage_Click();
+	void btnErasePage_App_Click();
 	void btnErase_Click();
 	void btnReadLocation_Click();
 	void btnSetPC_Click();
@@ -187,6 +199,7 @@ private slots:
 	void btnMACautoInc_Click();
 	void btnMAClow_Click();
 	void btnMAChi_Click();
+	void idle();
 };
 
 #endif // ccloadVIEW_H
