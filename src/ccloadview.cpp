@@ -121,6 +121,7 @@ ccloadView::ccloadView(QWidget *)
     connect(form.writeFile, SIGNAL(clicked()), this, SLOT(btnWrite_Click()));
     connect(form.writeFile_App, SIGNAL(clicked()), this, SLOT(btnWrite_App_Click()));
     connect(form.eraseChip, SIGNAL(clicked()), this, SLOT(btnErase_Click()));
+    connect(form.lock, SIGNAL(clicked()), this, SLOT(btnLock_Click()));
     connect(form.getStatus, SIGNAL(clicked()), this, SLOT(btnGetStatus_Click()));
     connect(form.flashCC, SIGNAL(clicked()), this, SLOT(btnFlashCC_Click()));
     connect(form.step, SIGNAL(clicked()), this, SLOT(btnStep_Click()));
@@ -151,6 +152,7 @@ ccloadView::ccloadView(QWidget *)
 	form.loadFile_App->setEnabled(true);
     form.verifyFile->setEnabled(false);
     form.verifyFile_App->setEnabled(false);
+    form.console->setReadOnly(true);
 
 }
 
@@ -170,10 +172,13 @@ ccloadView::idle()
 void
 ccloadView::consoleDisplay(QString &s)
 {
-     	int p = form.console->textCursor().position();
+     	//int p = form.console->textCursor().position();
      	form.console->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
      	form.console->insertPlainText(s);
-     	form.console->textCursor().setPosition(p);
+     	//form.console->textCursor().setPosition(p);
+ 	QTextCursor c = form.console->textCursor();
+ 	c.movePosition(QTextCursor::End);
+ 	form.console->setTextCursor(c);
 }
 
 void
@@ -489,6 +494,7 @@ ccloadView::setConnected()
 		form.writeFile_App->setEnabled(true);
 	}
 	form.eraseChip->setEnabled(true);
+	form.lock->setEnabled(true);
 }
 
 void
@@ -522,6 +528,7 @@ ccloadView::setDisconnected()
 	form.writeFile->setEnabled(false);
 	form.writeFile_App->setEnabled(false);
 	form.eraseChip->setEnabled(false);
+	form.lock->setEnabled(false);
 	form.readFile->setEnabled(false);
 	form.readFile_App->setEnabled(false);
 	form.chipSize->setText("");
@@ -1241,8 +1248,8 @@ ccloadView::WRITE_PAGE_FLASH(long iPageAddress, unsigned char *buffer, int lengt
 	addRoutine(routine, rlen, 0x75, 0x92, 0x00);                                             // set dptr 0
 	addRoutine(routine, rlen, 0x90, 0x00, 0x00);						 // mov DPTR0, #0x0000
 
-	addRoutine(routine, rlen, 0x7F, (((FLASH_PAGE_SIZE / FLASH_WORD_SIZE) >> 8) & 0xFF));	 // mov R7, #... pages/word hi
-	addRoutine(routine, rlen, 0x7E, ((FLASH_PAGE_SIZE / FLASH_WORD_SIZE) & 0xFF));		 // mov R6, #... pages/word low
+	addRoutine(routine, rlen, 0x7F, (((length / FLASH_WORD_SIZE) >> 8) & 0xFF));	 	// mov R7, #... pages/word hi
+	addRoutine(routine, rlen, 0x7E, ((length / FLASH_WORD_SIZE) & 0xFF));			 // mov R6, #... pages/word low
 	addRoutine(routine, rlen, 0x7D, FLASH_WORD_SIZE);					 //2:   mov R5, #FLASH_WORD_SIZE
 	    addRoutine(routine, rlen, 0xE0);							 //1:  mov A, @DPTR0
 	    addRoutine(routine, rlen, 0xA3);							 //    inc DPTR
@@ -1259,7 +1266,8 @@ ccloadView::WRITE_PAGE_FLASH(long iPageAddress, unsigned char *buffer, int lengt
 	addRoutine(routine, rlen, 0x75, 0x92, 0x00);                                             // set dptr 0
 	
 	addRoutine(routine, rlen, 0xDE, 0xe1);							 // djnz r6, 2b -31
-	addRoutine(routine, rlen, 0xDF, 0xdf);                                                   // djnz r7, 2b
+	if ((((length / FLASH_WORD_SIZE) >> 8) & 0xFF) != 0)
+		addRoutine(routine, rlen, 0xDF, 0xdf);                                           // djnz r7, 2b
 	
 	addRoutine(routine, rlen, 0x90, 0x62, 0x70);						 // mov DPTR1, #FCTL
 	addRoutine(routine, rlen, 0x74, 0x0);						 	 // mov A, #0x00
@@ -1659,6 +1667,29 @@ ccloadView::btnErase_Click()
 }
 
 void
+ccloadView::btnLock_Click()
+{
+	bool valid = true;
+//printf("setting DEBUG_INIT(false)\n");fflush(stdout);
+	valid = valid ? DEBUG_INIT(false) : false;
+//printf("gave %d\n", valid);fflush(stdout);
+//printf("setting CLOCK_INIT\n");fflush(stdout);
+	valid = valid ? CLOCK_INIT() : false;
+//printf("gave %d\n", valid);fflush(stdout);
+//printf("FLASH_PAGE_SIZE 0x%x\n", FLASH_PAGE_SIZE);fflush(stdout);
+
+	form.progress->setValue(0);
+	if (valid) {
+		unsigned char val[4] = {0xff, 0xff, 0xff, 0xfe};	// lock bit
+//printf("loop valid %d off %d\n", valid, off);fflush(stdout);	  
+		//WRITE_PAGE_FLASH((64*1024)-4, &val[0], 4, 0);
+		WRITE_PAGE_FLASH(FLASH_SIZE-4, &val[0], 4, 0);
+	}
+	DEBUG_INIT(false);
+	form.progress->setValue(100);
+}
+
+void
 ccloadView::btnWrite_Click()
 {
 	unsigned int machi=0, maclow=0;
@@ -1683,13 +1714,13 @@ ccloadView::btnWrite_Click()
 	int blen=0;
 	bool valid = true;
 	long length = maddr+1;
-printf("setting DEBUG_INIT(false)\n");fflush(stdout);
+//printf("setting DEBUG_INIT(false)\n");fflush(stdout);
 	valid = valid ? DEBUG_INIT(false) : false;
-printf("gave %d\n", valid);fflush(stdout);
-printf("setting CLOCK_INIT\n");fflush(stdout);
+//printf("gave %d\n", valid);fflush(stdout);
+//printf("setting CLOCK_INIT\n");fflush(stdout);
 	valid = valid ? CLOCK_INIT() : false;
-printf("gave %d\n", valid);fflush(stdout);
-printf("FLASH_PAGE_SIZE 0x%x\n", FLASH_PAGE_SIZE);fflush(stdout);
+//printf("gave %d\n", valid);fflush(stdout);
+//printf("FLASH_PAGE_SIZE 0x%x\n", FLASH_PAGE_SIZE);fflush(stdout);
 
 	form.progress->setMinimum(0);
 	form.progress->setMaximum((int)(100));
@@ -1699,7 +1730,7 @@ printf("FLASH_PAGE_SIZE 0x%x\n", FLASH_PAGE_SIZE);fflush(stdout);
 	unsigned char *buffer;
 	int off = 0;
 	while (valid && length > 0) {
-printf("loop valid %d off %d\n", valid, off);fflush(stdout);	  
+//printf("loop valid %d off %d\n", valid, off);fflush(stdout);	  
 		form.progress->setValue(100*off/(maddr+1));
 
 		buffer = &image[off];

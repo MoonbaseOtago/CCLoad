@@ -175,6 +175,7 @@ private slots:
 	void btnSelectFile_Click();
 	void btnSelectFile_App_Click();
 	void btnWrite_Click();
+	void btnLock_Click();
 	void btnWrite_App_Click();
 	void btnDebug_Click();
 	void btnProduction_Click();
