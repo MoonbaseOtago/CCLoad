@@ -1680,7 +1680,7 @@ ccloadView::btnLock_Click()
 
 	form.progress->setValue(0);
 	if (valid) {
-		unsigned char val[4] = {0xff, 0xff, 0xff, 0xfe};	// lock bit
+		unsigned char val[4] = {0xff, 0xff, 0xff, 0x7f};	// lock bit
 //printf("loop valid %d off %d\n", valid, off);fflush(stdout);	  
 		//WRITE_PAGE_FLASH((64*1024)-4, &val[0], 4, 0);
 		WRITE_PAGE_FLASH(FLASH_SIZE-4, &val[0], 4, 0);
