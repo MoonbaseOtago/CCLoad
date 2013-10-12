@@ -37,7 +37,7 @@ protected:
     int saved, save_in, save_out;
     unsigned char save_buffer[256];
     QMutex mutex;
-    char q[2048];
+    char q[10000];
     char *qin;
     char *qout;
     int qsize;
