@@ -48,8 +48,10 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am_ccload_OBJECTS = ccload.$(OBJEXT) ccloadview.$(OBJEXT) \
-	main.$(OBJEXT) mythread.$(OBJEXT) ttylock.$(OBJEXT)
-nodist_ccload_OBJECTS = moc_ccload.$(OBJEXT) moc_ccloadview.$(OBJEXT)
+	main.$(OBJEXT) mythread.$(OBJEXT) \
+	extraqplaintextedit.$(OBJEXT) ttylock.$(OBJEXT)
+nodist_ccload_OBJECTS = moc_ccload.$(OBJEXT) moc_ccloadview.$(OBJEXT) \
+	moc_extraqplaintextedit.$(OBJEXT)
 ccload_OBJECTS = $(am_ccload_OBJECTS) $(nodist_ccload_OBJECTS)
 am__DEPENDENCIES_1 =
 ccload_DEPENDENCIES = $(am__DEPENDENCIES_1)
@@ -164,6 +166,7 @@ ccload_SOURCES = \
 	ccloadview.cpp \
 	main.cpp \
 	mythread.cpp \
+	extraqplaintextedit.cpp \
 	ttylock.cpp
 
 
@@ -172,6 +175,7 @@ ccload_SOURCES = \
 nodist_ccload_SOURCES = \
 	moc_ccload.cpp \
 	moc_ccloadview.cpp \
+	moc_extraqplaintextedit.cpp \
 	ui_prefs_base.h \
 	ui_ccloadview_base.h
 
@@ -255,9 +259,11 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ccload.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ccloadview.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/extraqplaintextedit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/moc_ccload.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/moc_ccloadview.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/moc_extraqplaintextedit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mythread.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ttylock.Po@am__quote@
 
@@ -444,7 +450,7 @@ uninstall-am: uninstall-binPROGRAMS uninstall-info-am
 	uninstall-am uninstall-binPROGRAMS uninstall-info-am
 
 
-ccloadview.o:	ui_prefs_base.h ui_ccloadview_base.h
+ccloadview.o:	ui_prefs_base.h ui_ccloadview_base.h extraqplaintextedit.h
 ccload.o:	ui_prefs_base.h ui_ccloadview_base.h
 
 # This rule lets GNU make create any moc_*.cpp from the equivalent *.h

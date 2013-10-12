@@ -11,6 +11,7 @@ ccload_SOURCES = \
 	ccloadview.cpp \
 	main.cpp \
 	mythread.cpp \
+	extraqplaintextedit.cpp \
 	ttylock.cpp
 
 # You have one .h file, it's called myapp.h. Therefore, here I list
@@ -18,10 +19,11 @@ ccload_SOURCES = \
 nodist_ccload_SOURCES = \
 	moc_ccload.cpp \
 	moc_ccloadview.cpp \
+	moc_extraqplaintextedit.cpp \
 	ui_prefs_base.h \
 	ui_ccloadview_base.h
 
-ccloadview.o:	ui_prefs_base.h ui_ccloadview_base.h
+ccloadview.o:	ui_prefs_base.h ui_ccloadview_base.h extraqplaintextedit.h
 ccload.o:	ui_prefs_base.h ui_ccloadview_base.h
 
 # This is to ensure the myapp.h file is distributed in your myapp-0.1.tar.gz

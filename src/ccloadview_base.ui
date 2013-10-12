@@ -246,7 +246,7 @@
               </layout>
              </item>
              <item>
-              <widget class="QPlainTextEdit" name="console">
+              <widget class="ExtraQPlainTextEdit" name="console">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -1454,6 +1454,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ExtraQPlainTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>extraqplaintextedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
