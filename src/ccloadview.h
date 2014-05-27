@@ -88,7 +88,7 @@ private:
 	int FLASH_WORD_SIZE;
 	MyThread *thread;
 	int maddr;
-	unsigned char image[0x10000];
+	unsigned char image[256*1024];
 	int app_mstart;
 	int app_msize;
 	unsigned char app_image[0x10000];
@@ -177,6 +177,7 @@ private slots:
 	void btnWrite_Click();
 	void btnLock_Click();
 	void btnWrite_App_Click();
+	void btnWrite_All_Click();
 	void btnDebug_Click();
 	void btnProduction_Click();
 	void btnRead_Click();

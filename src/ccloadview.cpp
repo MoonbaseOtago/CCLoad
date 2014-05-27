@@ -104,6 +104,8 @@ ccloadView::ccloadView(QWidget *)
     form.lowMAC->setMaxLength(8);
     form.lowMAC->setInputMask("HHHHHHHH");
     form.hiMAC->setInputMask("HHHHHHHH");
+    form.allowUnknowns->setEnabled(true);
+    form.allowUnknowns->setChecked(true);
     btnMACwrite_Click_set();
     connect(form.DD, SIGNAL(clicked()), this, SLOT(btnFlashDD_Click()));
     connect(form.DC, SIGNAL(clicked()), this, SLOT(btnFlashDC_Click()));
@@ -120,6 +122,7 @@ ccloadView::ccloadView(QWidget *)
     connect(form.Production, SIGNAL(clicked()), this, SLOT(btnProduction_Click()));
     connect(form.writeFile, SIGNAL(clicked()), this, SLOT(btnWrite_Click()));
     connect(form.writeFile_App, SIGNAL(clicked()), this, SLOT(btnWrite_App_Click()));
+    connect(form.writeAll, SIGNAL(clicked()), this, SLOT(btnWrite_All_Click()));
     connect(form.eraseChip, SIGNAL(clicked()), this, SLOT(btnErase_Click()));
     connect(form.lock, SIGNAL(clicked()), this, SLOT(btnLock_Click()));
     connect(form.getStatus, SIGNAL(clicked()), this, SLOT(btnGetStatus_Click()));
@@ -151,7 +154,7 @@ ccloadView::ccloadView(QWidget *)
     if (!form.fileName_App->text().isEmpty())
 	form.loadFile_App->setEnabled(true);
     form.verifyFile->setEnabled(false);
-    form.verifyFile_App->setEnabled(false);
+    form.writeAll->setEnabled(false);
     form.console->setReadOnly(true);
 
 }
@@ -493,6 +496,10 @@ ccloadView::setConnected()
 		form.readFile_App->setEnabled(true);
 		form.writeFile_App->setEnabled(true);
 	}
+	if (maddr > 0 && app_msize > 0) {
+		form.writeAll->setEnabled(true);
+		form.lockOnAll->setEnabled(true);
+	}
 	form.eraseChip->setEnabled(true);
 	form.lock->setEnabled(true);
 }
@@ -527,6 +534,8 @@ ccloadView::setDisconnected()
 	form.halt->setEnabled(false);
 	form.writeFile->setEnabled(false);
 	form.writeFile_App->setEnabled(false);
+	form.writeAll->setEnabled(false);
+	form.lockOnAll->setEnabled(false);
 	form.eraseChip->setEnabled(false);
 	form.lock->setEnabled(false);
 	form.readFile->setEnabled(false);
@@ -789,8 +798,11 @@ ccloadView::GET_CHIP_ID(unsigned char &id, unsigned char &revision)
 		QString readData = getTokenREAD(response);
 		if (getDataByte(0, readData, id) && getDataByte(1, readData, revision)) {
 			if (id == 0 || id == 0xFF) {
-				form.statusLine->setText("GET_CHIP_ID error: Bad value " + QString("").sprintf("%02X", id));
-				return false;
+				// those weird 2533's we bought, fake them out
+                                if (id != 0xff || !(revision==0x11 || revision == 0x12) || !form.allowUnknowns->isChecked()) {
+					form.statusLine->setText("GET_CHIP_ID error: Bad value " + QString("").sprintf("%02X", id));
+					return false;
+				}
 			}
 
 			form.chipID->setText(QString("").sprintf("%02X", id));
@@ -849,6 +861,14 @@ ccloadView::GET_CHIP_ID(unsigned char &id, unsigned char &revision)
 				loadChipModel("CC1110F32;CC1110F16;CC1110F08");
 				form.chipModel->setEnabled(true);
 				break;
+			case 0xff:	// those weird 2533's we bought, fake them out
+				if ((revision==0x11 || revision == 0x12) && form.allowUnknowns->isChecked()) {
+					form.chipSeries->setText("CC2533");
+					loadChipModel("CC2533F32;CC2533F64;CC2533F96");
+					form.chipModel->setEnabled(true);
+					break;
+				}
+				// fall thru
 			default:
 				chipDefined = false;
 				form.chipSeries->setText("UNKNOWN");
@@ -932,7 +952,9 @@ bool
 ccloadView::MASS_ERASE_FLASH()
 {
 	bool result = true;
-	result = result ? DEBUG_INIT() : false;
+	DEBUG_INIT(1);
+	HALT();
+	result = result ? DEBUG_INIT(false) : false;
 	result = result ? DEBUG_INSTR(0x00) : false;
 	result = result ? CHIP_ERASE() : false;
 	int retry = 10;
@@ -1443,7 +1465,6 @@ ccloadView::cbChipModel_SelectedIndexChanged(int)
 					
 				if (ok1&&ok2&&ok3) {
 					form.chipSize->setText(QString("").sprintf("%dK", FLASH_SIZE / 1024));
-					
 					return;
 				}
 				form.statusLine->setText("Bad chip descriptor(s)");
@@ -1525,6 +1546,8 @@ ccloadView::btnSelectLoad_Click()
 	if (fileName.isEmpty()) {
 		form.loadFile->setEnabled(false);
 		form.writeFile->setEnabled(false);
+		form.writeAll->setEnabled(false);
+		form.lockOnAll->setEnabled(false);
 		form.readFile->setEnabled(false);
 		return;
 	}
@@ -1542,15 +1565,16 @@ ccloadView::btnSelectLoad_Click()
 	bool first = 1;
 	maddr=0;
 	memset(image, 0xff, sizeof(image));
-	for (;;) {
-	    char c;
-	    int i;
-	    int sum=0, len, addr;
-	    if (!f.getChar(&c)) 
+	if (fileName.right(4) == ".ihx") {
+	    for (;;) {
+	    	char c;
+	    	int i;
+	    	int sum=0, len, addr;
+	    	if (!f.getChar(&c)) 
 		    break;
-	    if (c == '\n') 
+	    	if (c == '\n') 
 		    continue;
-	    if (c != ':') {
+	    	if (c != ':') {
 		    if (first) {
 			form.statusLine->setText(QString("File %1 not in intel hex format").arg(fileName));
 			f.close();
@@ -1558,55 +1582,65 @@ ccloadView::btnSelectLoad_Click()
 			return;
 		    }
 		    break;
-	    }
-	    len = hex(&f);
-	    if (len < 0) 
+	    	}
+	    	len = hex(&f);
+	    	if (len < 0) 
 		    break;
-	    sum += len;
-	    addr = hex(&f);
-	    if (addr < 0)
+	    	sum += len;
+	    	addr = hex(&f);
+	    	if (addr < 0)
 		    break;
-	    sum += addr;
-	    i = hex(&f);
-	    if (i < 0)	
+	    	sum += addr;
+	    	i = hex(&f);
+	    	if (i < 0)	
 		    break;
-	    sum += i;
-	    addr = (addr<<8)+i;
-	    int type = hex(&f);
-	    if (type < 0)
+	    	sum += i;
+	    	addr = (addr<<8)+i;
+	    	int type = hex(&f);
+	    	if (type < 0)
 		    break;
-	    sum += type;
-	    if (type == 0x01)
+	    	sum += type;
+	    	if (type == 0x01)
 		    break;
-	    if (first) {
-		first = 0;
-		form.startAddress->setText(QString("0x%1").arg(addr, 4, 16, QLatin1Char('0')));
-	    }
-	    for (i = 0; i < len; i++) {
-		int v = hex(&f);
-		if (v < 0)
+	    	if (first) {
+			first = 0;
+			form.startAddress->setText(QString("0x%1").arg(addr, 4, 16, QLatin1Char('0')));
+	    	}
+	    	for (i = 0; i < len; i++) {
+			int v = hex(&f);
+			if (v < 0)
+				break;
+			image[(addr+i)&0xffff] = v;
+			sum += v;
+	    	}
+	    	i = hex(&f);
+	    	if ( i < 0)
 			break;
-		image[(addr+i)&0xffff] = v;
-		sum += v;
-	    }
-	    i = hex(&f);
-	    if ( i < 0)
-		break;
-	    if (i != ((0x100-(sum&0xff))&0xff)) {
-		form.statusLine->setText(QString("Bad checksum in file %1 @0x%2").arg(fileName).arg(addr, 4, 16, QLatin1Char('0')));
-		return;
-	    }
-	    addr += len-1;
-	    if (addr > maddr)
-		    maddr = addr;
-	}	 
+	    	if (i != ((0x100-(sum&0xff))&0xff)) {
+			form.statusLine->setText(QString("Bad checksum in file %1 @0x%2").arg(fileName).arg(addr, 4, 16, QLatin1Char('0')));
+			return;
+	    	}
+	    	addr += len-1;
+	    	if (addr > maddr)
+		    	maddr = addr;
+	    }	 
+	} else {
+		maddr = f.size();
+		if (maddr > sizeof(image))
+			maddr = sizeof(image);
+		f.read((char*)&image[0], maddr);
+	}
 	form.endAddress->setText(QString("0x%1").arg(maddr, 4, 16, QLatin1Char('0')));
 	f.close();
+
 	if (maddr > 0 && connected) {
 		form.writeFile->setEnabled(true);
 		form.readFile->setEnabled(true);
+		if (maddr > 0 && app_msize > 0) {
+			form.writeAll->setEnabled(true);
+			form.lockOnAll->setEnabled(true);
+		}
 	}
-	
 }
 
 void
@@ -1657,6 +1691,10 @@ fail:
 	if (app_msize > 0 && connected) {
 		form.writeFile_App->setEnabled(true);
 		form.readFile_App->setEnabled(true);
+		if (maddr > 0 && app_msize > 0) {
+			form.writeAll->setEnabled(true);
+			form.lockOnAll->setEnabled(true);
+		}
 	}
 }
 
@@ -1771,6 +1809,15 @@ ccloadView::btnWrite_Click()
 
 	DEBUG_INIT(false);
 	form.progress->setValue(100);
+}
+
+void
+ccloadView::btnWrite_All_Click()
+{
+	btnWrite_Click();
+	btnWrite_App_Click();
+	if (form.lockOnAll->isChecked())
+		btnLock_Click();
 }
 
 void
