@@ -65,14 +65,14 @@ ttylock::lock()
 	}
 	umask(old_mask);
 
-	if (link(pid_name.toAscii(), dev_name.toAscii()) < 0) {
+	if (link(pid_name.toLatin1(), dev_name.toLatin1()) < 0) {
 		if ((ret = check_lock(dev_name, getpid())) >= 0)
 			goto quit;
 	}
  quit:
 	if(!ret)
-		unlink(dev_name.toAscii());
-	unlink(pid_name.toAscii());
+		unlink(dev_name.toLatin1());
+	unlink(pid_name.toLatin1());
 	locked = ret;
 	return ret;
 }
@@ -84,7 +84,7 @@ ttylock::unlock()
 	if(get_names(tty) < 0) 
 		return;
 	if (check_lock(dev_name, 0) == 0)
-		unlink(dev_name.toAscii());
+		unlink(dev_name.toLatin1());
 }
 
 bool
@@ -92,7 +92,7 @@ ttylock::write_lock(QString dev, int my_pid )
 {
 	FILE *lock;
 
-	if ((lock = ::fopen(dev.toAscii(), "w")) == NULL) 
+	if ((lock = ::fopen(dev.toLatin1(), "w")) == NULL) 
 		return false;
 	::fprintf(lock, "%10d\n", my_pid);
 	::fclose(lock);
@@ -106,7 +106,7 @@ ttylock::check_lock(QString file, int wrk_pid)
 	int fd;
 	int fpid;
 
-	if ((fd = ::open( file.toAscii(), O_RDONLY)) < 0) 
+	if ((fd = ::open( file.toLatin1(), O_RDONLY)) < 0) 
 		return false;
 	if (::read(fd, &file_pid, sizeof(file_pid)) != sizeof( file_pid )-1) 
 		return false;
@@ -125,7 +125,7 @@ ttylock::check_lock(QString file, int wrk_pid)
 		if (::kill(fpid, 0) == 0 ) {
 			return false;
 		}
-		::unlink(file.toAscii());
+		::unlink(file.toLatin1());
 	}
 	return true;
 }
@@ -161,10 +161,10 @@ ttylock::get_names( QString dev )
 	dev_name = DEV_PATH+lock_name;
 
 	is_sym = 0;
-	if (lstat(dev_name.toAscii(), &mystat) >= 0) 
+	if (lstat(dev_name.toLatin1(), &mystat) >= 0) 
 		is_sym = S_ISLNK( mystat.st_mode );
 
-	if (stat(dev_name.toAscii(), &mystat ) < 0) 
+	if (stat(dev_name.toLatin1(), &mystat ) < 0) 
 		return false;
 	
 	dev_name = "";

@@ -21,8 +21,8 @@
 #ifndef MYTHREAD_H
 #define MYTHREAD_H
 
-#include <qt4/QtCore/QThread>
-#include <qt4/QtCore/QMutex>
+#include <QThread>
+#include <QMutex>
 #include "ccloadview.h"
 
 class ccloadView;
