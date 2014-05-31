@@ -21,10 +21,10 @@
 #include "ccloadview.h"
 //#include "settings.h"
 
-#include <QtGui/QDropEvent>
-#include <QtGui/QPainter>
-#include <QtGui/QPrinter>
-#include <QtGui/QStatusBar>
+#include <QDropEvent>
+#include <QPainter>
+#include <QPrinter>
+#include <QStatusBar>
 
 //#include <KConfigDialog>
 //#include <KStatusBar>

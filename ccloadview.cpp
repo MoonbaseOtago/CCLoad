@@ -24,9 +24,9 @@
 #include <termios.h>
 #include <unistd.h>
 
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QFileDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QFileDialog>
 #include <QThread>
 #include <QFileInfo>
 #include <QTimer>
@@ -358,23 +358,23 @@ ccloadView::getDataByte(int index, QString data, unsigned char &value)
 	QChar c1 = data[index * 2];
 	QChar c2 = data[index * 2+1];
 	if (c1 >= '0' && c1 <= '9') {
-		value = (c1.toAscii()-'0')<<4;
+		value = (c1.toLatin1()-'0')<<4;
 	} else 
 	if (c1 >= 'a' && c1 <= 'f') {
-		value = (c1.toAscii()-'a'+10)<<4;
+		value = (c1.toLatin1()-'a'+10)<<4;
 	} else 
 	if (c1 >= 'A' && c1 <= 'F') {
-		value = (c1.toAscii()-'A'+10)<<4;
+		value = (c1.toLatin1()-'A'+10)<<4;
 	} else 
 		return false;
 	if (c2 >= '0' && c2 <= '9') {
-		value |= (c2.toAscii()-'0');
+		value |= (c2.toLatin1()-'0');
 	} else 
 	if (c2 >= 'a' && c2 <= 'f') {
-		value |= (c2.toAscii()-'a'+10);
+		value |= (c2.toLatin1()-'a'+10);
 	} else 
 	if (c2 >= 'A' && c2 <= 'F') {
-		value |= (c2.toAscii()-'A'+10);
+		value |= (c2.toLatin1()-'A'+10);
 	} else 
 		return false;
 	return true;
@@ -1804,7 +1804,7 @@ ccloadView::btnWrite_Click()
 		char t[10];
 		maclow++;
 		snprintf(t, sizeof(t), "%08X", maclow);
-		form.lowMAC->setText(QString::fromAscii(&t[0]));
+		form.lowMAC->setText(QString::fromLatin1(&t[0]));
 	}
 
 	DEBUG_INIT(false);
@@ -1910,7 +1910,7 @@ ccloadView::btnRead_App_Click()
 		return;
 	}
 	return;
-	FILE *fs = fopen(form.fileName_App->text().toAscii(), "w");
+	FILE *fs = fopen(form.fileName_App->text().toLatin1(), "w");
 	if (!fs) {
 		form.statusLine->setText("Error: file create failed");
 		return;
@@ -1948,7 +1948,7 @@ ccloadView::btnRead_Click()
 		return;
 	}
 	return;
-	FILE *fs = fopen(form.fileName->text().toAscii(), "w");
+	FILE *fs = fopen(form.fileName->text().toLatin1(), "w");
 	if (!fs) {
 		form.statusLine->setText("Error: file create failed");
 		return;
@@ -1991,16 +1991,16 @@ ccloadView::btnReadLocation_Click()
      if (!READ_XDATA_MEMORY(addr, sizeof(buffer), &buffer[0], len))
 	    return;
      QString res("");
-     res.append(QString("%1").arg(addr,4,16,'0'));
+     res.append(QString("%1").arg(addr,4,16,(QChar)'0'));
      res.append(QString(":"));
      for (int i = 0; i < len; i++)
-	 res.append(QString(" %1").arg(buffer[i],2,16,'0'));
+	 res.append(QString(" %1").arg(buffer[i],2,16,(QChar)'0'));
      int p = form.console->textCursor().position();
      form.console->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
      form.console->insertPlainText(res);
      form.console->textCursor().setPosition(p);
      addr += sizeof(buffer);
-     form.readLocation->setText(QString("0x%1").arg(addr,4,16,'0'));
+     form.readLocation->setText(QString("0x%1").arg(addr,4,16,(QChar)'0'));
 }
 
 void 
