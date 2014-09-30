@@ -1302,6 +1302,8 @@ ccloadView::WRITE_PAGE_FLASH(long iPageAddress, unsigned char *buffer, int lengt
 	valid = valid ? DEBUG_INSTR(0x75, 0x9f, (unsigned char)0x00) : false; // map flash to 0x8000
 	valid = valid ? DEBUG_INSTR(0x75, 0xC7, 0x08) : false; 		      // map sram to 0x8000
 //printf("routine =");for (int i=0;i<rlen; i++) printf(" %02x", routine[i]);printf("\n");fflush(stdout);
+//printf("addr=%x\n", iPageAddress);fflush(stdout);
+//printf("routine =");for (int i=0;i<length; i++) printf(" %02x", buffer[i]);printf("\n");fflush(stdout);
 //printf("writing xdata data len=%d\n", length);fflush(stdout);
 	valid = valid ? WRITE_XDATA_MEMORY(0x0000, buffer, length) : false;
 //printf("writing xdata code rlen=%d\n", length);fflush(stdout);
@@ -1625,7 +1627,7 @@ ccloadView::btnSelectLoad_Click()
 		    	maddr = addr;
 	    }	 
 	} else {
-		maddr = f.size();
+		maddr = f.size()-1;
 		if (maddr > sizeof(image))
 			maddr = sizeof(image);
 		f.read((char*)&image[0], maddr);
