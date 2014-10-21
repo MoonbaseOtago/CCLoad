@@ -142,6 +142,9 @@ private:
 	bool DEBUG_INSTR(unsigned char in0, unsigned char in1, unsigned char in2);
 	bool dbg_DebugInstr(unsigned char *cmds, int len, unsigned char *data);
 	bool CLOCK_INIT();
+	bool WRITE_QDATA_START();
+	bool WRITE_QDATA_END();
+	bool WRITE_QDATA_MEMORY(int address, unsigned char *buffer, int length);
 	bool WRITE_XDATA_MEMORY(int address, unsigned char *buffer, int length);
 	bool READ_XDATA_MEMORY(int address, int length, unsigned char *buffer, int &outlen);
 	bool READ_CODE_MEMORY(int address, unsigned char bank, int length, unsigned char *buffer, int &outlen);
@@ -162,6 +165,7 @@ private:
 	int startPC;
 	bool connected;
 	void consoleDisplay(QString &s);
+	bool fastWrite, fastWriteAll;
 	
 
 signals:
@@ -201,6 +205,7 @@ private slots:
 	void btnMACautoInc_Click();
 	void btnMAClow_Click();
 	void btnMAChi_Click();
+	void btnFastWrite_Click();
 	void idle();
 };
 

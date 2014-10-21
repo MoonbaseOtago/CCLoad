@@ -80,6 +80,9 @@ ccloadView::ccloadView(QWidget *)
     inDebugMode = false;
     port = -1;
     prod = 1;
+	
+    fastWrite = false;
+    fastWriteAll = false;
 
     form.setupUi(this);
     lock = NULL;
@@ -106,6 +109,7 @@ ccloadView::ccloadView(QWidget *)
     form.hiMAC->setInputMask("HHHHHHHH");
     form.allowUnknowns->setEnabled(true);
     form.allowUnknowns->setChecked(true);
+    form.fastWrite->setChecked(settings->value("fastWrite", false).toBool());
     btnMACwrite_Click_set();
     connect(form.DD, SIGNAL(clicked()), this, SLOT(btnFlashDD_Click()));
     connect(form.DC, SIGNAL(clicked()), this, SLOT(btnFlashDC_Click()));
@@ -123,6 +127,7 @@ ccloadView::ccloadView(QWidget *)
     connect(form.writeFile, SIGNAL(clicked()), this, SLOT(btnWrite_Click()));
     connect(form.writeFile_App, SIGNAL(clicked()), this, SLOT(btnWrite_App_Click()));
     connect(form.writeAll, SIGNAL(clicked()), this, SLOT(btnWrite_All_Click()));
+    connect(form.fastWrite, SIGNAL(clicked()), this, SLOT(btnFastWrite_Click()));
     connect(form.eraseChip, SIGNAL(clicked()), this, SLOT(btnErase_Click()));
     connect(form.lock, SIGNAL(clicked()), this, SLOT(btnLock_Click()));
     connect(form.getStatus, SIGNAL(clicked()), this, SLOT(btnGetStatus_Click()));
@@ -1098,6 +1103,82 @@ ccloadView::CLOCK_INIT()
 }
 
 bool
+ccloadView::WRITE_QDATA_START()
+{
+	int i = 0;
+	QString response = QString("").sprintf("MQ%04X", 0);
+
+	response = sendCommand(response, QString("").sprintf("Sending WRITE_QDATA_START %04X ...", 0));
+	if (!parseOK(response)) {
+		form.statusLine->setText("WRITE_QDATA_START error:" + response);
+		//LED(false);
+		return false;
+	}
+	//LED(false);
+	return true;
+}
+
+bool
+ccloadView::WRITE_QDATA_END()
+{
+	int i = 0;
+	QString response = QString("").sprintf("MJ%04X00", 0);
+
+	response = sendCommand(response, QString("").sprintf("Sending WRITE_QDATA_END %04X ...", 0));
+	if (!parseOK(response)) {
+		form.statusLine->setText("WRITE_QDATA_END error:" + response);
+		//LED(false);
+		return false;
+	}
+	//LED(false);
+	return true;
+}
+
+bool
+ccloadView::WRITE_QDATA_MEMORY(int address, unsigned char *buffer, int length)
+{
+	const int PACKET_SIZE = 128;
+	int i = 0;
+	int nextAddress = address;
+	while (length > 0) {
+		int sentBytes = length > PACKET_SIZE ? PACKET_SIZE : length;
+		QString response = QString("").sprintf("MN%04X%02X", address, sentBytes);
+		nextAddress += sentBytes/FLASH_WORD_SIZE;
+		length -= sentBytes;
+		while (sentBytes > 0) {
+if (i == 24) {
+printf("%02x%02x%02x\n", buffer[i], buffer[i+1],buffer[i+2]);
+}
+			sentBytes -= 3;
+			unsigned int b = buffer[i++];
+			unsigned int c0 = ((b>>2)&0x3f);// 76 5432 
+			unsigned int c1 = ((b<<4)&0x30);// 10 ----
+			b = buffer[i++];
+			c1 |= (b>>4)&0xf;		// -- 7654
+			unsigned int c2 = ((b<<2)&0x3c);// 32 10--
+			b = buffer[i++];
+			c2 |= (b>>6)&0x3;		// -- --76
+			unsigned int c3 = (b&0x3f);	// 54 3210
+if (i == 27) {
+printf("%02x%02x%02x%02x\n", c0,c1,c2,c3);
+}
+			response += QString("").sprintf("%c%c%c%c", ' '+c0, ' '+c1, ' '+c2, ' '+c3);
+		}
+		i--;
+
+		response = sendCommand(response, QString("").sprintf("Sending WRITE_QDATA %04X ...", address));
+		address = nextAddress;
+		if (parseOK(response)) 
+			continue;
+		form.statusLine->setText("WRITE_QDATA error:" + response);
+		//LED(false);
+		return false;
+	}
+	//LED(false);
+	return true;
+}
+
+bool
 ccloadView::WRITE_XDATA_MEMORY(int address, unsigned char *buffer, int length)
 {
 	const int PACKET_SIZE = 64;
@@ -1244,6 +1325,11 @@ bool
 ccloadView::WRITE_PAGE_FLASH(long iPageAddress, unsigned char *buffer, int length, bool erasePage)
 {
 	bool valid = true;
+	
+	if (fastWrite) {
+		valid = valid ? WRITE_QDATA_MEMORY(iPageAddress/FLASH_WORD_SIZE, buffer, length) : false;
+		return valid;
+	}
 	unsigned char routine[1024]; int rlen=0;
 	addRoutine(routine, rlen, 0x90, 0x62, 0x71);						 // mov DPTR, #FADDRL
 	addRoutine(routine, rlen, 0x74, (iPageAddress/FLASH_WORD_SIZE)&0xff);			 // mov A, #page address lo
@@ -1723,7 +1809,10 @@ ccloadView::btnLock_Click()
 		unsigned char val[4] = {0xff, 0xff, 0xff, 0x7f};	// lock bit
 //printf("loop valid %d off %d\n", valid, off);fflush(stdout);	  
 		//WRITE_PAGE_FLASH((64*1024)-4, &val[0], 4, 0);
+		bool tmp = fastWrite;
+		fastWrite = false;
 		WRITE_PAGE_FLASH(FLASH_SIZE-4, &val[0], 4, 0);
+		fastWrite = tmp;
 	}
 	DEBUG_INIT(false);
 	form.progress->setValue(100);
@@ -1769,6 +1858,18 @@ ccloadView::btnWrite_Click()
 	long pageAddress = 0;
 	unsigned char *buffer;
 	int off = 0;
+	
+	if (fastWrite && valid) {
+		MASS_ERASE_FLASH();
+		if (!WRITE_QDATA_START()) {
+			fastWrite = 0;
+			form.fastWrite->setChecked(0);
+			settings->setValue("fastWrite", form.fastWrite->isChecked());
+			settings->sync();
+			form.statusLine->setText("Fast Write Failed - disabled");
+			valid = 0;
+		}
+	}
 	while (valid && length > 0) {
 //printf("loop valid %d off %d\n", valid, off);fflush(stdout);	  
 		form.progress->setValue(100*off/(maddr+1));
@@ -1782,9 +1883,13 @@ ccloadView::btnWrite_Click()
 			off += length;
 			length = 0;
 		}
-		if (!isPageEmpty(buffer)) {
-			// valid =
-			WRITE_PAGE_FLASH(pageAddress, buffer, FLASH_PAGE_SIZE, form.erasePage->isChecked());
+		if (!isPageEmpty(buffer) || fastWrite) {
+			valid = WRITE_PAGE_FLASH(pageAddress, buffer, FLASH_PAGE_SIZE, form.erasePage->isChecked());
+			if (!valid) {
+READ_REGISTERS();
+				form.statusLine->setText("Write failed");
+				break;
+			}
 			if (valid && form.verifyAfterWrite->isChecked()) {
 				unsigned char code[FLASH_PAGE_SIZE];
 				memset(code, 0xff, sizeof(code));
@@ -1802,6 +1907,9 @@ ccloadView::btnWrite_Click()
 			pageAddress += (long)FLASH_PAGE_SIZE;
 		}
 	}
+	if (fastWrite) {
+		valid = valid ? WRITE_QDATA_END(): false;
+	}
 	if (form.writeMAC->isChecked() && form.autoIncMAC->isChecked()) {
 		char t[10];
 		maclow++;
@@ -1814,10 +1922,20 @@ ccloadView::btnWrite_Click()
 }
 
 void
+ccloadView::btnFastWrite_Click()
+{
+	fastWrite = form.fastWrite->isChecked();
+	settings->setValue("fastWrite", form.fastWrite->isChecked());
+	settings->sync();
+}
+
+void
 ccloadView::btnWrite_All_Click()
 {
+	fastWriteAll = 1;
 	btnWrite_Click();
 	btnWrite_App_Click();
+	fastWriteAll = 0;
 	if (form.lockOnAll->isChecked())
 		btnLock_Click();
 }
@@ -1850,6 +1968,17 @@ ccloadView::btnWrite_App_Click()
 	long pageAddress = app_mstart;
 	unsigned char *buffer;
 	int off = 0;
+	if (fastWrite && valid && !fastWriteAll) {
+		MASS_ERASE_FLASH();
+		if (!WRITE_QDATA_START()) {
+			fastWrite = 0;
+			form.fastWrite->setChecked(0);
+			settings->setValue("fastWrite", form.fastWrite->isChecked());
+			settings->sync();
+			form.statusLine->setText("Fast Write Failed - disabled");
+			valid = 0;
+		}
+	}
 	while (valid && length > 0) {
 //printf("loop valid %d off %d\n", valid, off);fflush(stdout);	  
 		form.progress->setValue(100*off/(app_msize));
@@ -1863,9 +1992,12 @@ ccloadView::btnWrite_App_Click()
 			off += length;
 			length = 0;
 		}
-		if (!isPageEmpty(buffer)) {
-			// valid =
-			WRITE_PAGE_FLASH(pageAddress, buffer, FLASH_PAGE_SIZE, form.erasePage_App->isChecked());
+		if (!isPageEmpty(buffer) || fastWrite) {
+			valid = WRITE_PAGE_FLASH(pageAddress, buffer, FLASH_PAGE_SIZE, form.erasePage_App->isChecked());
+			if (!valid) {
+				form.statusLine->setText("Write failed");
+				break;
+			}
 			if (valid && form.verifyAfterWrite_App->isChecked()) {
 				unsigned char code[FLASH_PAGE_SIZE];
 				memset(code, 0xff, sizeof(code));
@@ -1882,6 +2014,9 @@ ccloadView::btnWrite_App_Click()
 			}
 			pageAddress += (long)FLASH_PAGE_SIZE;
 		}
+	}
+	if (fastWrite) {
+		valid = valid ? WRITE_QDATA_END(): false;
 	}
 	DEBUG_INIT(false);
 	form.progress->setValue(100);
@@ -1949,12 +2084,12 @@ ccloadView::btnRead_Click()
 	    if (form.fileName->text().isEmpty()) 
 		return;
 	}
-	return;
-	FILE *fs = fopen(form.fileName->text().toAscii(), "w");
-	if (!fs) {
-		form.statusLine->setText("Error: file create failed");
-		return;
-	}
+//	return;
+//	FILE *fs = fopen(form.fileName->text().toAscii(), "w");
+//	if (!fs) {
+//		form.statusLine->setText("Error: file create failed");
+//		return;
+//	}
 	bool valid = true;
 	valid = valid ? DEBUG_INIT(false) : false;
 	valid = valid ? CLOCK_INIT() : false;
@@ -1969,12 +2104,12 @@ ccloadView::btnRead_Click()
 		unsigned char buffer[FLASH_PAGE_SIZE];
 		form.progress->setValue(form.progress->value()+1);
 		valid = valid ? READ_FLASH_PAGE(pageAddress, FLASH_PAGE_SIZE, buffer, blen) : false;
-		if (valid)
-			fwrite(buffer, 1, blen, fs);
+//	if (valid)
+//			fwrite(buffer, 1, blen, fs);
 		pageAddress += FLASH_PAGE_SIZE;
 	}
-	if (fs)
-		fclose(fs);
+//	if (fs)
+//		fclose(fs);
 	DEBUG_INIT(false);
 	form.progress->setValue(0);
 }

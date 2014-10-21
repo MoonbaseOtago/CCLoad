@@ -30,8 +30,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>946</width>
-        <height>1051</height>
+        <width>1139</width>
+        <height>1161</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -621,6 +621,13 @@
                   </property>
                   <property name="text">
                    <string>Select File</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="3">
+                 <widget class="QCheckBox" name="fastWrite">
+                  <property name="text">
+                   <string>Fast Write (alpha)</string>
                   </property>
                  </widget>
                 </item>
