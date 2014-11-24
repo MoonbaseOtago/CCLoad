@@ -81,7 +81,6 @@ ccloadView::ccloadView(QWidget *)
     port = -1;
     prod = 1;
 	
-    fastWrite = false;
     fastWriteAll = false;
 
     form.setupUi(this);
@@ -110,6 +109,7 @@ ccloadView::ccloadView(QWidget *)
     form.allowUnknowns->setEnabled(true);
     form.allowUnknowns->setChecked(true);
     form.fastWrite->setChecked(settings->value("fastWrite", false).toBool());
+    fastWrite = form.fastWrite->isChecked();
     btnMACwrite_Click_set();
     connect(form.DD, SIGNAL(clicked()), this, SLOT(btnFlashDD_Click()));
     connect(form.DC, SIGNAL(clicked()), this, SLOT(btnFlashDC_Click()));
